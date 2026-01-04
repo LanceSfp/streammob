@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stream | Manage profile and preferences</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <main class="profile-settings">
+    <header class="profile-settings__header">
+      <button class="profile-settings__back" onclick="window.history.back()" aria-label="Back">
+        &#8592;
+      </button>
+      <h1>Manage profile and preferences</h1>
+    </header>
+
+    <section class="profile-settings__content">
+      <section class="profile-settings__card">
+        <div class="profile-settings__avatar" id="settings-profile-avatar">
+          <div class="profile-settings__avatar-icon" id="settings-profile-avatar-icon">🙂</div>
+        </div>
+        <div class="profile-settings__meta">
+          <div class="profile-settings__name" id="settings-profile-name">Profile name</div>
+          <div class="profile-settings__subtitle">Edit personal and contact info</div>
+        </div>
+        <button class="profile-settings__chevron" aria-label="Edit profile">
+          &rsaquo;
+        </button>
+      </section>
+
+      <section class="profile-settings__card profile-settings__card--sub" id="settings-profile-lock" role="button" tabindex="0" style="cursor: pointer;">
+        <div class="profile-settings__icon">
+          🔒
+        </div>
+        <div class="profile-settings__meta">
+          <div class="profile-settings__name">Profile Lock</div>
+          <div class="profile-settings__subtitle">Require a PIN to access this profile</div>
+        </div>
+        <button class="profile-settings__chevron" aria-label="Edit profile lock">
+          &rsaquo;
+        </button>
+      </section>
+
+      <h2 class="profile-settings__section-title">Preferences</h2>
+
+      <section class="profile-settings__card profile-settings__card--row">
+        <div class="profile-settings__icon profile-settings__icon--small">
+          🌐
+        </div>
+        <div class="profile-settings__meta">
+          <div class="profile-settings__name">Languages</div>
+          <div class="profile-settings__subtitle">Set languages for display and audio</div>
+        </div>
+        <button class="profile-settings__chevron" aria-label="Edit languages">
+          &rsaquo;
+        </button>
+      </section>
+
+      <section class="profile-settings__card profile-settings__card--row">
+        <div class="profile-settings__icon profile-settings__icon--small">
+          🛡️
+        </div>
+        <div class="profile-settings__meta">
+          <div class="profile-settings__name">Adjust Parental Controls</div>
+          <div class="profile-settings__subtitle">Edit maturity rating and title restrictions</div>
+        </div>
+        <button class="profile-settings__chevron" aria-label="Edit parental controls">
+          &rsaquo;
+        </button>
+      </section>
+
+      <section class="profile-settings__card profile-settings__card--row">
+        <div class="profile-settings__icon profile-settings__icon--small">
+          💬
+        </div>
+        <div class="profile-settings__meta">
+          <div class="profile-settings__name">Subtitle appearance</div>
+          <div class="profile-settings__subtitle">Customize the way subtitles appear</div>
+        </div>
+        <button class="profile-settings__chevron" aria-label="Edit subtitle appearance">
+          &rsaquo;
+        </button>
+      </section>
+
+      <section class="profile-settings__card profile-settings__card--row">
+        <div class="profile-settings__icon profile-settings__icon--small">
+          🔁
+        </div>
+        <div class="profile-settings__meta">
+          <div class="profile-settings__name">Playback settings</div>
+          <div class="profile-settings__subtitle">Set autoplay and audio, video quality</div>
+        </div>
+        <button class="profile-settings__chevron" aria-label="Edit playback settings">
+          &rsaquo;
+        </button>
+      </section>
+    </section>
+  </main>
+
+  <!-- Profile Lock Verification Modal (shown when profile already has a lock) -->
+  <div class="lock-modal" id="lock-verify-modal" aria-hidden="true">
+    <div class="lock-modal__backdrop"></div>
+    <div class="lock-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="lock-verify-modal-title">
+      <button class="lock-modal__close" id="lock-verify-modal-close" aria-label="Close">✕</button>
+      <h2 id="lock-verify-modal-title">Enter Current Lock Code</h2>
+      <p class="lock-modal__subtitle">Enter your current 4-digit code to continue</p>
+
+      <div class="lock-modal__code-inputs" id="lock-verify-code-inputs">
+        <input type="text" inputmode="numeric" pattern="[0-9]" maxlength="1" class="lock-modal__code-digit" id="verify-code-0" autocomplete="off">
+        <input type="text" inputmode="numeric" pattern="[0-9]" maxlength="1" class="lock-modal__code-digit" id="verify-code-1" autocomplete="off">
+        <input type="text" inputmode="numeric" pattern="[0-9]" maxlength="1" class="lock-modal__code-digit" id="verify-code-2" autocomplete="off">
+        <input type="text" inputmode="numeric" pattern="[0-9]" maxlength="1" class="lock-modal__code-digit" id="verify-code-3" autocomplete="off">
+      </div>
+
+      <p class="lock-modal__error" id="lock-verify-error" hidden></p>
+
+      <div class="lock-modal__actions">
+        <button type="button" class="lock-modal__cancel" id="lock-verify-cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Lock Options Modal (shown after verification) -->
+  <div class="lock-modal" id="lock-options-modal" aria-hidden="true">
+    <div class="lock-modal__backdrop"></div>
+    <div class="lock-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="lock-options-modal-title">
+      <button class="lock-modal__close" id="lock-options-modal-close" aria-label="Close">✕</button>
+      <h2 id="lock-options-modal-title">Profile Lock Options</h2>
+      <p class="lock-modal__subtitle">Choose an option for your profile lock</p>
+
+      <div class="lock-modal__options">
+        <button type="button" class="lock-modal__option-btn" id="lock-replace-btn">
+          <span class="lock-modal__option-icon">🔐</span>
+          <div class="lock-modal__option-content">
+            <div class="lock-modal__option-title">Replace Lock Code</div>
+            <div class="lock-modal__option-subtitle">Set a new 4-digit code</div>
+          </div>
+        </button>
+        <button type="button" class="lock-modal__option-btn" id="lock-remove-btn">
+          <span class="lock-modal__option-icon">🔓</span>
+          <div class="lock-modal__option-content">
+            <div class="lock-modal__option-title">Remove Lock</div>
+            <div class="lock-modal__option-subtitle">Remove the lock code from this profile</div>
+          </div>
+        </button>
+      </div>
+
+      <div class="lock-modal__actions">
+        <button type="button" class="lock-modal__cancel" id="lock-options-cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Lock Modal (for setting new code) -->
+  <div class="lock-modal" id="lock-modal" aria-hidden="true">
+    <div class="lock-modal__backdrop"></div>
+    <div class="lock-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="lock-modal-title">
+      <button class="lock-modal__close" id="lock-modal-close" aria-label="Close">✕</button>
+      <h2 id="lock-modal-title">Set Profile Lock</h2>
+      <p class="lock-modal__subtitle">Enter a 4-digit code to lock your profile</p>
+
+      <div class="lock-modal__code-inputs" id="lock-code-inputs">
+        <input type="text" inputmode="numeric" pattern="[0-9]" maxlength="1" class="lock-modal__code-digit" id="code-0" autocomplete="off">
+        <input type="text" inputmode="numeric" pattern="[0-9]" maxlength="1" class="lock-modal__code-digit" id="code-1" autocomplete="off">
+        <input type="text" inputmode="numeric" pattern="[0-9]" maxlength="1" class="lock-modal__code-digit" id="code-2" autocomplete="off">
+        <input type="text" inputmode="numeric" pattern="[0-9]" maxlength="1" class="lock-modal__code-digit" id="code-3" autocomplete="off">
+      </div>
+
+      <p class="lock-modal__error" id="lock-error" hidden></p>
+
+      <div class="lock-modal__actions">
+        <button type="button" class="lock-modal__save" id="lock-save-btn">Save</button>
+        <button type="button" class="lock-modal__cancel" id="lock-cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../../auth.js"></script>
+  <script src="settings.js"></script>
+</body>
+</html>
+
+

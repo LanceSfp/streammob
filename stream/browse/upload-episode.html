@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Episode - Stream</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 40px;
+      background: #000;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+    }
+    .upload-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #141414;
+      padding: 30px;
+      border-radius: 8px;
+    }
+    h1 {
+      margin-top: 0;
+    }
+    .upload-area {
+      border: 2px dashed #666;
+      border-radius: 8px;
+      padding: 40px;
+      text-align: center;
+      margin: 20px 0;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+    .upload-area:hover {
+      border-color: #e50914;
+    }
+    .upload-area.dragover {
+      border-color: #e50914;
+      background: rgba(229, 9, 20, 0.1);
+    }
+    input[type="file"] {
+      display: none;
+    }
+    .file-info {
+      margin: 20px 0;
+      padding: 15px;
+      background: #1a1a1a;
+      border-radius: 4px;
+      display: none;
+    }
+    .file-info.show {
+      display: block;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #333;
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 15px 0;
+      display: none;
+    }
+    .progress-bar.show {
+      display: block;
+    }
+    .progress-fill {
+      height: 100%;
+      background: #e50914;
+      width: 0%;
+      transition: width 0.3s;
+    }
+    .progress-text {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #999;
+      display: none;
+    }
+    .progress-text.show {
+      display: block;
+    }
+    button {
+      background: #e50914;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+    }
+    button:hover {
+      background: #f40612;
+    }
+    button:disabled {
+      background: #666;
+      cursor: not-allowed;
+    }
+    .message {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 4px;
+      display: none;
+    }
+    .message.show {
+      display: block;
+    }
+    .message.success {
+      background: rgba(34, 197, 94, 0.2);
+      border: 1px solid #22c55e;
+      color: #22c55e;
+    }
+    .message.error {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #ef4444;
+    }
+    .file-path-input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #fff;
+      font-size: 14px;
+    }
+    .file-path-input::placeholder {
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="upload-container">
+    <h1>Upload Episode</h1>
+    
+    <div class="upload-area" id="upload-area">
+      <p>📁 Drag and drop your video file here</p>
+      <p style="color: #999; font-size: 14px;">or click to select</p>
+      <input type="file" id="file-input" accept="video/*">
+    </div>
+
+    <div class="file-info" id="file-info">
+      <strong>Selected file:</strong> <span id="file-name"></span><br>
+      <strong>Size:</strong> <span id="file-size"></span><br>
+      <strong>Type:</strong> <span id="file-type"></span>
+    </div>
+
+    <label style="display: block; margin: 20px 0 10px;">
+      <strong>Storage Path (optional):</strong>
+      <input type="text" class="file-path-input" id="file-path" placeholder="episodes/episode-1.mp4" value="episodes/">
+      <small style="color: #666; display: block; margin-top: 5px;">
+        Leave empty or use format: episodes/filename.mp4
+      </small>
+    </label>
+
+    <div class="progress-bar" id="progress-bar">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+    <div class="progress-text" id="progress-text">0%</div>
+
+    <button id="upload-btn" disabled>Upload Video</button>
+
+    <div class="message" id="message"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../auth.js"></script>
+  <script>
+    const uploadArea = document.getElementById('upload-area');
+    const fileInput = document.getElementById('file-input');
+    const fileInfo = document.getElementById('file-info');
+    const fileName = document.getElementById('file-name');
+    const fileSize = document.getElementById('file-size');
+    const fileType = document.getElementById('file-type');
+    const filePath = document.getElementById('file-path');
+    const uploadBtn = document.getElementById('upload-btn');
+    const progressBar = document.getElementById('progress-bar');
+    const progressFill = document.getElementById('progress-fill');
+    const progressText = document.getElementById('progress-text');
+    const message = document.getElementById('message');
+
+    let selectedFile = null;
+
+    // Click to select file
+    uploadArea.addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    // Drag and drop
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.classList.add('dragover');
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        handleFileSelect(files[0]);
+      }
+    });
+
+    // File input change
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        handleFileSelect(e.target.files[0]);
+      }
+    });
+
+    function handleFileSelect(file) {
+      selectedFile = file;
+      
+      // Display file info
+      fileName.textContent = file.name;
+      fileSize.textContent = formatFileSize(file.size);
+      fileType.textContent = file.type || 'Unknown';
+      fileInfo.classList.add('show');
+      
+      // Auto-fill path if empty
+      if (!filePath.value || filePath.value === 'episodes/') {
+        filePath.value = `episodes/${file.name}`;
+      }
+      
+      // Enable upload button
+      uploadBtn.disabled = false;
+      hideMessage();
+    }
+
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+    }
+
+    function showMessage(text, type) {
+      message.textContent = text;
+      message.className = `message show ${type}`;
+    }
+
+    function hideMessage() {
+      message.classList.remove('show');
+    }
+
+    function showProgress(percent) {
+      progressBar.classList.add('show');
+      progressText.classList.add('show');
+      progressFill.style.width = percent + '%';
+      progressText.textContent = Math.round(percent) + '%';
+    }
+
+    function hideProgress() {
+      progressBar.classList.remove('show');
+      progressText.classList.remove('show');
+    }
+
+    // Upload function
+    async function uploadVideo() {
+      if (!selectedFile) {
+        showMessage('Please select a file first', 'error');
+        return;
+      }
+
+      const supabase = initSupabase();
+      if (!supabase) {
+        showMessage('Supabase not initialized. Make sure auth.js is loaded.', 'error');
+        return;
+      }
+
+      // Check if user is authenticated
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session) {
+        showMessage('Please log in first', 'error');
+        return;
+      }
+
+      // Get file path
+      let storagePath = filePath.value.trim();
+      if (!storagePath) {
+        storagePath = `episodes/${selectedFile.name}`;
+      }
+      
+      // Ensure path doesn't start with /
+      if (storagePath.startsWith('/')) {
+        storagePath = storagePath.substring(1);
+      }
+
+      // Disable upload button
+      uploadBtn.disabled = true;
+      uploadBtn.textContent = 'Uploading...';
+      hideMessage();
+      showProgress(0);
+
+      try {
+        console.log('Starting upload...');
+        console.log('File:', selectedFile.name);
+        console.log('Size:', formatFileSize(selectedFile.size));
+        console.log('Path:', storagePath);
+
+        // Upload the file
+        const { data, error } = await supabase.storage
+          .from('stream') // Your bucket name
+          .upload(storagePath, selectedFile, {
+            cacheControl: '3600',
+            upsert: false, // Set to true if you want to overwrite existing files
+            contentType: selectedFile.type || 'video/mp4'
+          });
+
+        if (error) {
+          console.error('Upload error:', error);
+          showMessage(`Upload failed: ${error.message}`, 'error');
+          hideProgress();
+          uploadBtn.disabled = false;
+          uploadBtn.textContent = 'Upload Video';
+          return;
+        }
+
+        console.log('Upload successful:', data);
+
+        // Get the public URL
+        const { data: urlData } = await supabase.storage
+          .from('stream')
+          .getPublicUrl(storagePath);
+
+        // Or create a signed URL (valid for 1 year)
+        const { data: signedData } = await supabase.storage
+          .from('stream')
+          .createSignedUrl(storagePath, 31536000); // 1 year in seconds
+
+        showProgress(100);
+        
+        const successMsg = `Upload successful! 
+File: ${storagePath}
+Public URL: ${urlData.publicUrl}
+Signed URL: ${signedData.signedUrl}`;
+        
+        showMessage(successMsg, 'success');
+        console.log('Public URL:', urlData.publicUrl);
+        console.log('Signed URL:', signedData.signedUrl);
+
+        // Reset form after 3 seconds
+        setTimeout(() => {
+          selectedFile = null;
+          fileInput.value = '';
+          fileInfo.classList.remove('show');
+          filePath.value = 'episodes/';
+          uploadBtn.disabled = true;
+          uploadBtn.textContent = 'Upload Video';
+          hideProgress();
+        }, 3000);
+
+      } catch (err) {
+        console.error('Upload failed:', err);
+        showMessage(`Upload failed: ${err.message}`, 'error');
+        hideProgress();
+        uploadBtn.disabled = false;
+        uploadBtn.textContent = 'Upload Video';
+      }
+    }
+
+    uploadBtn.addEventListener('click', uploadVideo);
+  </script>
+</body>
+</html>

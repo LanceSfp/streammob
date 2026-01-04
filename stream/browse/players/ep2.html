@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stream | Day 2: The First Challenge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../browse.css">
+  <link rel="stylesheet" href="player.css">
+  <link rel="stylesheet" href="../../../transition.css">
+</head>
+
+<body>
+  <div class="video-player" id="video-player">
+    <!-- Video Container -->
+    <div class="video-player__container">
+      <video class="video-player__video" id="video-element" playsinline autoplay>
+        <source src="https://zsbimpglrsvpwsbyzkbj.supabase.co/storage/v1/object/public/stream/pbb/Day%202/Day2.m3u8"
+          type="application/x-mpegURL">
+        Your browser does not support the video tag.
+      </video>
+
+      <!-- Loading Spinner -->
+      <div class="video-player__loading" id="loading-spinner">
+        <div class="video-player__loading-spinner"></div>
+      </div>
+
+      <!-- Custom Subtitle Overlay -->
+      <div class="video-player__subtitle-overlay" id="subtitle-overlay"></div>
+
+      <!-- Age Rating Overlay -->
+      <div class="video-player__rating-overlay" id="rating-overlay">
+        <div class="video-player__rating-badge">TV-PG</div>
+        <div class="video-player__rating-separator"></div>
+        <div class="video-player__rating-content">
+          <img src="reality.png" alt="Reality" class="video-player__rating-icon">
+          <span>Reality</span>
+        </div>
+      </div>
+
+      <!-- Pause Overlay -->
+      <div class="video-player__pause-overlay" id="pause-overlay">
+        <div class="video-player__pause-overlay-content">
+          <img src="../pbblogo.png" alt="Pinoy Big Brother" class="video-player__pause-overlay-logo">
+          <p class="video-player__pause-overlay-description">
+            Reality Show that explores how individuals interact and socialize in a one house. This test the honesty and
+            social skill of the person. Discover the journey of roblox users on how they face every challenges and tasks
+            given by Big Brother.
+          </p>
+        </div>
+      </div>
+
+
+
+      <!-- Controls Overlay -->
+      <div class="video-player__controls" id="controls">
+        <!-- Top Controls Bar -->
+        <div class="video-player__top-controls">
+          <button class="video-player__back-btn" id="back-btn" aria-label="Back to Browse">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+
+          <!-- X-Ray Overlay (Rich UI) -->
+          <div class="video-player__xray-overlay-container" id="xray-overlay-container">
+            <div class="video-player__xray-header">
+              <span class="video-player__xray-logo">X-Ray</span>
+              <span class="video-player__xray-chevron">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" />
+                </svg>
+              </span>
+              <span class="video-player__xray-imdb">IMDb</span>
+              <button class="video-player__xray-all-btn" id="xray-all-btn">
+                All
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+                </svg>
+                <div class="video-player__xray-all-btn-progress">
+                  <div class="video-player__xray-all-btn-progress-filled" id="xray-all-btn-progress"></div>
+                </div>
+              </button>
+            </div>
+
+            <!-- Dynamic Content Preview -->
+            <div class="video-player__xray-preview" id="xray-preview">
+              <!-- Content will be injected by JS -->
+              <div class="xray-preview-content">
+                <div class="xray-preview-title">General trivia</div>
+                <div class="xray-preview-text">Over three hundred Hewlett-Packard workstations were employed in the
+                  making of the movie.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bottom Controls Bar -->
+        <div class="video-player__bottom-controls">
+          <div class="video-player__progress-container">
+            <div class="video-player__progress-bar" id="progress-bar">
+              <div class="video-player__progress-filled" id="progress-filled"></div>
+              <div class="video-player__progress-handle" id="progress-handle"></div>
+              <div class="video-player__progress-timestamp" id="progress-timestamp"></div>
+              <div class="video-player__progress-thumbnail" id="progress-thumbnail">
+                <img id="progress-thumbnail-img" src="" alt="Preview">
+              </div>
+            </div>
+          </div>
+
+          <div class="video-player__control-buttons">
+            <div class="video-player__left-controls">
+              <button class="video-player__play-btn" id="play-btn" aria-label="Play/Pause">
+                <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                  <rect x="6" y="4" width="4" height="16"></rect>
+                  <rect x="14" y="4" width="4" height="16"></rect>
+                </svg>
+              </button>
+
+              </button>
+
+              <button class="video-player__skip-backward-btn" id="skip-backward-btn" aria-label="Skip Backward 10s">
+                <img src="replay.png" alt="Replay">
+              </button>
+              <button class="video-player__skip-forward-btn" id="skip-forward-btn" aria-label="Skip Forward 10s">
+                <img src="forward.png" alt="Forward">
+              </button>
+              <button class="video-player__volume-btn" id="volume-btn" aria-label="Volume">
+                <svg class="volume-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                  <path class="volume-waves" d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                </svg>
+                <svg class="volume-muted-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  style="display: none;">
+                  <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                  <line x1="23" y1="9" x2="17" y2="15"></line>
+                  <line x1="17" y1="9" x2="23" y2="15"></line>
+                </svg>
+                <div class="video-player__volume-slider-container">
+                  <div class="video-player__volume-slider-track">
+                    <div class="video-player__volume-slider-filled" id="volume-slider-filled"></div>
+                    <input type="range" class="video-player__volume-slider" id="volume-slider" min="0" max="100"
+                      value="100" aria-label="Volume">
+                  </div>
+                </div>
+              </button>
+            </div>
+
+            <div class="video-player__episode-info" id="episode-info">
+              <span class="video-player__episode-info-show" id="episode-info-show">Pinoy Big Brother</span>
+              <span class="video-player__episode-info-episode" id="episode-info-episode"> S1: Day 2: The First Challenge</span>
+            </div>
+
+            <div class="video-player__right-controls">
+              <button class="video-player__episodes-btn" id="episodes-btn" aria-label="Episodes">
+                <img src="ep.png" alt="Episodes" class="video-player__episodes-icon">
+              </button>
+              <button class="video-player__subtitles-btn" id="subtitles-btn" aria-label="Subtitles">
+                <img src="lang.png" alt="Subtitles" class="video-player__subtitles-icon">
+              </button>
+              <button class="video-player__fullscreen-btn" id="fullscreen-btn" aria-label="Fullscreen">
+                <svg class="fullscreen-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path
+                    d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3">
+                  </path>
+                </svg>
+                <svg class="fullscreen-exit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  style="display: none;">
+                  <path d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                </svg>
+              </button>
+              <div class="video-player__time-display" id="time-display">0:00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skip Montage Button -->
+      <button class="video-player__skip-intro" id="skip-montage-btn" aria-label="Skip Montage">
+        <span class="video-player__skip-intro-text">Skip Recap</span>
+        <span class="video-player__skip-intro-icon-wrapper">
+          <img class="video-player__skip-intro-icon video-player__skip-intro-icon--default" src="skipw.png" alt="Skip">
+          <img class="video-player__skip-intro-icon video-player__skip-intro-icon--hover" src="skipb.png" alt="Skip">
+        </span>
+        <div class="video-player__skip-intro-progress">
+          <div class="video-player__skip-intro-progress-filled" id="skip-montage-progress"></div>
+        </div>
+      </button>
+
+      <!-- Next Episode Button -->
+      <button class="video-player__next-episode" id="next-episode-btn" aria-label="Next Episode">
+        <span class="video-player__next-episode-text">Next Episode</span>
+        <span class="video-player__next-episode-icon-wrapper">
+          <img class="video-player__next-episode-icon video-player__next-episode-icon--default" src="skipw.png"
+            alt="Next">
+          <img class="video-player__next-episode-icon video-player__next-episode-icon--hover" src="skipb.png"
+            alt="Next">
+        </span>
+        <div class="video-player__next-episode-progress">
+          <div class="video-player__next-episode-progress-filled" id="next-episode-progress"></div>
+        </div>
+      </button>
+
+      <!-- X-Ray Overlay Notification -->
+      <div class="video-player__xray-notification" id="xray-notification">
+        <div class="video-player__xray-notification-content">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <span id="xray-notification-text">In this scene</span>
+        </div>
+      </div>
+
+      <!-- X-Ray Panel -->
+      <div class="video-player__xray-panel" id="xray-panel">
+        <div class="video-player__xray-panel-header">
+          <div class="video-player__xray-panel-header-left">
+            <h3>X-Ray</h3>
+            <div class="video-player__xray-panel-nav">
+              <button class="video-player__xray-panel-tab active" data-tab="all">All</button>
+              <button class="video-player__xray-panel-tab" data-tab="cast">Cast</button>
+              <button class="video-player__xray-panel-tab" data-tab="trivia">Trivia</button>
+              <button class="video-player__xray-panel-tab" data-tab="music">Music</button>
+            </div>
+          </div>
+          <button class="video-player__xray-panel-close" id="xray-close" aria-label="Close X-Ray">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="video-player__xray-panel-content" id="xray-content">
+          <!-- Content injected via JS -->
+          <div class="video-player__xray-panel-empty">
+            Loading X-Ray data...
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Panel -->
+      <div class="video-player__settings-panel" id="settings-panel">
+        <div class="video-player__settings-header">
+          <h3>Audio & Subtitles</h3>
+          <button class="video-player__settings-close" id="settings-close" aria-label="Close Settings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="video-player__settings-content">
+          <div class="video-player__settings-section">
+            <h4>Audio</h4>
+            <div class="video-player__settings-options" id="audio-tracks"></div>
+          </div>
+          <div class="video-player__settings-section">
+            <h4>Subtitles</h4>
+            <div class="video-player__settings-options" id="subtitle-tracks">
+              <button class="video-player__settings-option active" data-track="off">
+                <span>Off</span>
+                <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Episodes Panel -->
+      <div class="video-player__episodes-panel" id="episodes-panel">
+        <div class="video-player__episodes-header">
+          <h3>Episodes</h3>
+          <button class="video-player__episodes-close" id="episodes-close" aria-label="Close Episodes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="video-player__episodes-content">
+          <div class="video-player__episodes-season-selector">
+            <button class="video-player__episodes-season-btn active" data-season="1">Season 1</button>
+          </div>
+          <div class="video-player__episodes-list" id="episodes-list-container">
+            <!-- Episodes will be populated by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="../../auth.js"></script>
+  <script src="../watch-history.js"></script>
+  <script src="xray-ep2.js"></script>
+  <script src="player.js"></script>
+  <script src="../../../transition.js"></script>
+  <script>
+    // Ensure Filipino audio is selected by default for this page
+    document.addEventListener('DOMContentLoaded', () => {
+      // Wait for player to be initialized
+      const checkPlayer = setInterval(() => {
+        if (window.videoPlayer && window.videoPlayer.hls) {
+          clearInterval(checkPlayer);
+
+          // Force Filipino audio track selection
+          if (window.videoPlayer.hls.audioTracks && window.videoPlayer.hls.audioTracks.length > 0) {
+            window.videoPlayer.selectFilipinoAudioTrack();
+          } else {
+            // If audio tracks aren't loaded yet, wait for manifest
+            const checkTracks = setInterval(() => {
+              if (window.videoPlayer.hls.audioTracks && window.videoPlayer.hls.audioTracks.length > 0) {
+                clearInterval(checkTracks);
+                window.videoPlayer.selectFilipinoAudioTrack();
+              }
+            }, 500);
+
+            // Stop checking after 10 seconds
+            setTimeout(() => clearInterval(checkTracks), 10000);
+          }
+        }
+      }, 100);
+
+      // Stop checking after 5 seconds if player doesn't initialize
+      setTimeout(() => clearInterval(checkPlayer), 5000);
+
+      // Show age rating overlay at start
+      const video = document.getElementById('video-element');
+      const ratingOverlay = document.getElementById('rating-overlay');
+
+      if (video && ratingOverlay) {
+        // Show rating when video starts playing
+        video.addEventListener('play', function showRating() {
+          if (video.currentTime < 1) { // Only show if at the beginning
+            ratingOverlay.classList.add('show');
+            setTimeout(() => {
+              ratingOverlay.classList.remove('show');
+            }, 6000); // Show for 6 seconds
+            video.removeEventListener('play', showRating);
+          }
+        }, { once: false });
+
+        // Also try to show immediately if video is already playing
+        if (!video.paused && video.currentTime < 1) {
+          ratingOverlay.classList.add('show');
+          setTimeout(() => {
+            ratingOverlay.classList.remove('show');
+          }, 6000);
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
+

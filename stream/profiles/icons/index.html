@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stream | Choose a profile icon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="icons.css">
+</head>
+<body>
+  <main class="icon-picker">
+    <header class="icon-picker__header">
+      <button class="icon-picker__back" onclick="window.history.back()" aria-label="Back">
+        &#8592;
+      </button>
+      <div class="icon-picker__title-block">
+        <h1>Choose a profile icon</h1>
+        <p class="icon-picker__subtitle">For <span id="icon-picker-name">Profile</span></p>
+      </div>
+      <div class="icon-picker__current" id="icon-picker-current">
+        <div class="icon-picker__current-avatar" id="icon-picker-current-avatar">🙂</div>
+      </div>
+    </header>
+
+    <section class="icon-picker__section">
+      <h2 class="icon-picker__section-title">The Classics</h2>
+      <div class="icon-picker__row" id="icon-row-classics">
+        <!-- icons rendered by JS -->
+      </div>
+    </section>
+
+    <section class="icon-picker__section">
+      <h2 class="icon-picker__section-title">
+        <img src="../../browse/pbblogo.png" alt="Pinoy Big Brother" class="icon-picker__logo">
+      </h2>
+      <div class="icon-picker__row" id="icon-row-stranger">
+        <!-- icons rendered by JS -->
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../../auth.js"></script>
+  <script src="icons.js"></script>
+</body>
+</html>
+
+

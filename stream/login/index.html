@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stream | Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <main class="hero hero--auth">
+    <div class="hero__bg"></div>
+    <div class="hero__fade hero__fade--heavy"></div>
+
+    <div class="auth">
+      <div class="logo auth__logo">STREAM</div>
+
+      <div class="auth__card">
+        <h1>Sign In</h1>
+        <form id="login-form" action="#" method="post">
+          <label class="sr-only" for="login-email">Email or mobile number</label>
+          <input id="login-email" name="email" type="email" placeholder="Email or mobile number" required>
+
+          <label class="sr-only" for="login-password">Password</label>
+          <input id="login-password" name="password" type="password" placeholder="Password" required>
+
+          <button type="submit" class="auth__btn">Sign In</button>
+
+          <div class="auth__divider"><span>OR</span></div>
+          <button type="button" class="auth__btn auth__btn--ghost">Use a Sign-In Code</button>
+
+          <div class="auth__link-row">
+            <a class="auth__link" href="#">Forgot password?</a>
+          </div>
+
+          <div class="auth__footer">
+            <label class="auth__checkbox">
+              <input type="checkbox" name="remember" checked>
+              Remember me
+            </label>
+            <a class="auth__link" href="#">Need help?</a>
+          </div>
+        </form>
+
+        <p id="auth-error" class="auth__note" hidden></p>
+
+        <div class="auth__alt">
+          New to Stream? <a href="../signup/">Sign up now.</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../auth.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stream | Pinoy Big Brother: Roblox Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../../styles.css">
+  <link rel="stylesheet" href="../../browse.css">
+  <link rel="stylesheet" href="../titles.css">
+  <style>
+    /* Critical dropdown styles - inline to prevent conflicts */
+    #profile-dropdown {
+      position: absolute !important;
+      top: 100% !important;
+      right: 0 !important;
+      background: rgba(0, 0, 0, 0.95) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      border-radius: 4px !important;
+      width: 200px !important;
+      padding: 4px 0 !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      z-index: 10000 !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.9) !important;
+      display: block !important;
+      color: #ffffff !important;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+      transition: none !important;
+    }
+    #profile-dropdown.is-open,
+    #profile-dropdown[data-open="true"] {
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+    }
+    #profile-dropdown .nav__dropdown-item {
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      padding: 8px 12px !important;
+      color: #ffffff !important;
+      font-size: 0.875rem !important;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+      cursor: pointer !important;
+      white-space: nowrap !important;
+      line-height: 1.3 !important;
+      margin: 0 !important;
+      border: none !important;
+      background: transparent !important;
+      text-align: left !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    #profile-dropdown .nav__dropdown-item:hover {
+      background-color: rgba(255, 255, 255, 0.08) !important;
+    }
+    #profile-dropdown .nav__dropdown-icon {
+      width: 14px !important;
+      height: 14px !important;
+      min-width: 14px !important;
+      min-height: 14px !important;
+      stroke: currentColor !important;
+      stroke-width: 2 !important;
+      fill: none !important;
+      flex-shrink: 0 !important;
+      opacity: 0.9 !important;
+      display: block !important;
+      color: #ffffff !important;
+    }
+    #profile-dropdown .nav__dropdown-avatar {
+      width: 20px !important;
+      height: 20px !important;
+      min-width: 20px !important;
+      min-height: 20px !important;
+      border-radius: 3px !important;
+      background: linear-gradient(135deg, #22c55e, #0ea5e9) !important;
+      flex-shrink: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      position: relative !important;
+      overflow: hidden !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    #profile-dropdown .nav__dropdown-kids-logo {
+      width: 14px !important;
+      height: 14px !important;
+      min-width: 14px !important;
+      min-height: 14px !important;
+      flex-shrink: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    #profile-dropdown .nav__dropdown-kids-icon {
+      width: 100% !important;
+      height: 100% !important;
+      background: linear-gradient(135deg, #f97316, #e11d48, #8b5cf6, #22c55e) !important;
+      border-radius: 2px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 0.5rem !important;
+      font-weight: 700 !important;
+      color: white !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.2px !important;
+    }
+    #profile-dropdown .nav__dropdown-divider {
+      height: 1px !important;
+      background: rgba(255, 255, 255, 0.15) !important;
+      margin: 2px 0 !important;
+      padding: 0 !important;
+      border: none !important;
+      width: 100% !important;
+    }
+    #profile-dropdown span {
+      color: #ffffff !important;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+      display: inline-block !important;
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="nav__left">
+      <div class="logo nav__logo">STREAM</div>
+      <nav class="nav__links">
+        <a href="../../index.html" class="nav__link">Home</a>
+        <a href="#" class="nav__link nav__link--active">Shows</a>
+        <a href="#" class="nav__link">Movies</a>
+        <a href="#" class="nav__link">New &amp; Popular</a>
+        <a href="#" class="nav__link">My List</a>
+        <a href="#" class="nav__link">Browse by Languages</a>
+      </nav>
+    </div>
+    <div class="nav__right">
+      <button class="nav__icon">🔍</button>
+      <button class="nav__icon">Kids</button>
+      <button class="nav__icon">🔔</button>
+      <div class="nav__profile-container">
+        <div class="nav__profile-trigger" onclick="if(window.toggleProfileDropdown){event._dropdownHandled='inline_'+Date.now(); event.stopImmediatePropagation(); event.stopPropagation(); window.toggleProfileDropdown(event); return false;}" onmousedown="event.stopPropagation(); event.stopImmediatePropagation();" style="cursor: pointer;">
+          <div class="nav__avatar" onclick="if(window.toggleProfileDropdown){event._dropdownHandled='inline_'+Date.now(); event.stopImmediatePropagation(); event.stopPropagation(); window.toggleProfileDropdown(event); return false;}" onmousedown="event.stopPropagation(); event.stopImmediatePropagation();" style="cursor: pointer;"></div>
+          <span class="nav__profile" id="nav-profile-label" onclick="if(window.toggleProfileDropdown){event._dropdownHandled='inline_'+Date.now(); event.stopImmediatePropagation(); event.stopPropagation(); window.toggleProfileDropdown(event); return false;}" onmousedown="event.stopPropagation(); event.stopImmediatePropagation();" style="cursor: pointer;"></span>
+          <span class="nav__profile-arrow" onclick="if(window.toggleProfileDropdown){event._dropdownHandled='inline_'+Date.now(); event.stopImmediatePropagation(); event.stopPropagation(); window.toggleProfileDropdown(event); return false;}" onmousedown="event.stopPropagation(); event.stopImmediatePropagation();" style="cursor: pointer;">▼</span>
+        </div>
+        <div class="nav__dropdown" id="profile-dropdown" data-open="false">
+          <div class="nav__dropdown-item nav__dropdown-item--active" id="current-profile-item" onclick="event.stopPropagation(); event.stopImmediatePropagation(); if(window.redirectToProfiles){window.redirectToProfiles(event);} else {window.location.href='../../../profiles/';}" style="cursor: pointer;">
+            <div class="nav__dropdown-avatar" id="dropdown-avatar"></div>
+            <div class="nav__dropdown-kids-logo" id="profile-kids-logo" style="display: none;">
+              <div class="nav__dropdown-kids-icon">kids</div>
+            </div>
+            <span id="profile-name-text">Profile</span>
+            <span class="nav__profile-arrow nav__dropdown-arrow">▼</span>
+          </div>
+          <div class="nav__dropdown-item" id="manage-profiles">
+            <svg class="nav__dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            <span>Manage Profiles</span>
+          </div>
+          <div class="nav__dropdown-item" id="transfer-profile">
+            <svg class="nav__dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span>Transfer Profile</span>
+          </div>
+          <div class="nav__dropdown-item" id="account">
+            <svg class="nav__dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Account</span>
+          </div>
+          <div class="nav__dropdown-item" id="help-center">
+            <svg class="nav__dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            <span>Help Center</span>
+          </div>
+          <div class="nav__dropdown-divider"></div>
+          <div class="nav__dropdown-item nav__dropdown-item--signout" id="sign-out">
+            <span>Sign out of Stream</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="title-detail">
+    <button class="title-detail__close" onclick="window.history.back()" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <section class="title-detail__hero">
+      <div class="title-detail__hero-thumbnail" id="hero-thumbnail" style="display: block; opacity: 1; visibility: visible;">
+        <img src="../../players/thumb.jpeg" alt="Pinoy Big Brother" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+      </div>
+      <video class="title-detail__hero-video" id="hero-video" loop playsinline preload="auto" webkit-playsinline crossorigin="anonymous" muted>
+        <source src="https://zsbimpglrsvpwsbyzkbj.supabase.co/storage/v1/object/sign/stream/pbbpreview.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZWM5YjY2MS05MzE0LTQwODAtYmU4NS1iMjJjYTc3YmUxMTMiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzdHJlYW0vcGJicHJldmlldy5tcDQiLCJpYXQiOjE3NjY1NDYzOTEsImV4cCI6MjA4MTkwNjM5MX0.z_xVpZPnyaRMZ-8namUoqzqZyEkO7yCzhKsuxAzwnYU" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="title-detail__hero-background"></div>
+      <div class="title-detail__hero-overlay"></div>
+      <div class="title-detail__subtitle-overlay" id="subtitle-overlay"></div>
+      <div class="title-detail__hero-content">
+        <div class="title-detail__info">
+          <h1 class="title-detail__title">
+            <img src="../../pbblogo.png" alt="Pinoy Big Brother: Roblox Edition" style="max-width: 45%; height: auto; display: block;">
+          </h1>
+          <div class="title-detail__meta">
+            <span class="title-detail__match">95% Match</span>
+            <span class="title-detail__year">2024</span>
+            <span class="title-detail__rating">TV-PG</span>
+            <span class="title-detail__seasons">1 Season</span>
+            <span class="title-detail__quality">HD</span>
+          </div>
+          <p class="title-detail__description">
+            Reality Show that explores how individuals interact and socialize in a one house. This test the honesty and social skill of the person. Discover the journey of roblox users on how they face every challenges and tasks given by Big Brother.
+          </p>
+          <div class="title-detail__actions">
+            <button class="title-detail__btn title-detail__btn--play">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              <span>Play</span>
+            </button>
+            <button class="title-detail__btn title-detail__btn--secondary" title="Add to My List">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <button class="title-detail__btn title-detail__btn--secondary" title="Rate">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="title-detail__hero-fade"></div>
+      <button class="title-detail__volume-btn" id="volume-btn" aria-label="Toggle volume">
+        <svg class="title-detail__volume-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+          <path class="title-detail__volume-waves" d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+      </button>
+    </section>
+
+    <section class="title-detail__content">
+      <div class="title-detail__episodes">
+        <div class="title-detail__tabs">
+          <button class="title-detail__tab title-detail__tab--active" data-tab="episodes">EPISODES</button>
+          <button class="title-detail__tab" data-tab="highlights">Highlights</button>
+          <button class="title-detail__tab" data-tab="exclusives">Exclusives</button>
+        </div>
+        <div class="title-detail__season-bar" id="season-bar">
+          <button class="title-detail__season-btn title-detail__season-btn--active">Season 1</button>
+        </div>
+        <div class="title-detail__episodes-container">
+          <button class="title-detail__episodes-nav title-detail__episodes-nav--left" id="episodes-nav-left" aria-label="Scroll left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="title-detail__episodes-list" id="episodes-list">
+          <div class="title-detail__episode-card">
+            <div class="title-detail__episode-thumbnail" style="background-image: url('../../day1-thumbnail.jpg'); background-size: cover; background-position: center;"></div>
+            <div class="title-detail__episode-card-info">
+              <div class="title-detail__episode-card-number">1</div>
+              <h3 class="title-detail__episode-card-title">Day 1: The Big Opening (26m)</h3>
+              <p class="title-detail__episode-card-description">
+                Contestants enter the house and meet for the first time.
+              </p>
+            </div>
+          </div>
+          <div class="title-detail__episode-card">
+            <div class="title-detail__episode-thumbnail" style="background-image: url('../../day2-thumbnail.jpg'); background-size: cover; background-position: center;"></div>
+            <div class="title-detail__episode-card-info">
+              <div class="title-detail__episode-card-number">2</div>
+              <h3 class="title-detail__episode-card-title">Day 2: The First Challenge (23m)</h3>
+              <p class="title-detail__episode-card-description">
+                The first major challenge tests the contestants' teamwork and strategy.
+              </p>
+            </div>
+          </div>
+          <div class="title-detail__episode-card">
+            <div class="title-detail__episode-thumbnail" style="background-image: url('../../pbb.png'); background-size: cover; background-position: center;"></div>
+            <div class="title-detail__episode-card-info">
+              <div class="title-detail__episode-card-number">3</div>
+              <h3 class="title-detail__episode-card-title">Day 3: ???</h3>
+              <p class="title-detail__episode-card-description">
+                Coming Soon...
+              </p>
+            </div>
+          </div>
+          <div class="title-detail__episode-card">
+            <div class="title-detail__episode-thumbnail" style="background-image: url('../../pbb.png'); background-size: cover; background-position: center;"></div>
+            <div class="title-detail__episode-card-info">
+              <div class="title-detail__episode-card-number">4</div>
+              <h3 class="title-detail__episode-card-title">Day 4: ???</h3>
+              <p class="title-detail__episode-card-description">
+                Coming Soon...
+              </p>
+            </div>
+          </div>
+          <div class="title-detail__episode-card">
+            <div class="title-detail__episode-thumbnail" style="background-image: url('../../pbb.png'); background-size: cover; background-position: center;"></div>
+            <div class="title-detail__episode-card-info">
+              <div class="title-detail__episode-card-number">5</div>
+              <h3 class="title-detail__episode-card-title">Day 5: ???</h3>
+              <p class="title-detail__episode-card-description">
+                Coming Soon...
+              </p>
+            </div>
+          </div>
+          </div>
+          <div class="title-detail__episodes-list" id="highlights-list" style="display: none; flex-direction: row; gap: 16px; overflow-x: auto; overflow-y: visible; padding-bottom: 20px; scroll-behavior: smooth; scrollbar-width: none; -ms-overflow-style: none; flex: 1;">
+            <a href="../../players/highlight-1.html" class="title-detail__episode-card" style="text-decoration: none; color: inherit;">
+              <div class="title-detail__episode-thumbnail" style="background-image: url('../../highlight1-thumbnail.jpg'); background-size: cover; background-position: center;"></div>
+              <div class="title-detail__episode-card-info">
+                <h3 class="title-detail__episode-card-title">Day 8: Naging emotional si Vianca sa pag alis nila Ivan at Jhiro</h3>
+                <p class="title-detail__episode-card-description">
+                  Vianca shows her emotions as Ivan and Jhiro leave the house.
+                </p>
+              </div>
+            </a>
+            <div class="title-detail__episode-card">
+              <div class="title-detail__episode-thumbnail" style="background-image: url('../../pbb.png'); background-size: cover; background-position: center;"></div>
+              <div class="title-detail__episode-card-info">
+                <h3 class="title-detail__episode-card-title">???</h3>
+                <p class="title-detail__episode-card-description">
+                  Coming Soon...
+                </p>
+              </div>
+            </div>
+            <div class="title-detail__episode-card">
+              <div class="title-detail__episode-thumbnail" style="background-image: url('../../pbb.png'); background-size: cover; background-position: center;"></div>
+              <div class="title-detail__episode-card-info">
+                <h3 class="title-detail__episode-card-title">???</h3>
+                <p class="title-detail__episode-card-description">
+                  Coming Soon...
+                </p>
+              </div>
+            </div>
+          </div>
+          <button class="title-detail__episodes-nav title-detail__episodes-nav--right" id="episodes-nav-right" aria-label="Scroll right">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="title-detail__more">
+        <h2 class="title-detail__more-title">More Like This</h2>
+        <div class="title-detail__more-grid">
+          <div class="title-detail__more-item">
+            <div class="title-detail__more-thumbnail"></div>
+            <div class="title-detail__more-info">
+              <h3>Big Brother</h3>
+              <p>2000 • TV-14 • 24 Seasons</p>
+            </div>
+          </div>
+          <div class="title-detail__more-item">
+            <div class="title-detail__more-thumbnail"></div>
+            <div class="title-detail__more-info">
+              <h3>Survivor</h3>
+              <p>2000 • TV-PG • 45 Seasons</p>
+            </div>
+          </div>
+          <div class="title-detail__more-item">
+            <div class="title-detail__more-thumbnail"></div>
+            <div class="title-detail__more-info">
+              <h3>The Amazing Race</h3>
+              <p>2001 • TV-PG • 35 Seasons</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../../../auth.js"></script>
+  <script src="../../watch-history.js"></script>
+  <script src="../../browse.js"></script>
+  <script src="../titles-api.js"></script>
+  <script src="pinoy-big-brother.js"></script>
+  <script>
+    // Add progress bars to episode thumbnails
+    async function addProgressBarsToEpisodes() {
+      if (!window.watchHistory) {
+        if (typeof WatchHistory !== 'undefined') {
+          window.watchHistory = new WatchHistory();
+          await window.watchHistory.init();
+        } else {
+          return;
+        }
+      }
+
+      const episodeCards = document.querySelectorAll('.title-detail__episode-card');
+      episodeCards.forEach(async (card) => {
+        const thumbnail = card.querySelector('.title-detail__episode-thumbnail');
+        if (!thumbnail) return;
+
+        // Check if progress bar already exists
+        if (thumbnail.querySelector('.title-detail__episode-card-progress-bar')) return;
+
+        const titleEl = card.querySelector('.title-detail__episode-card-title');
+        if (!titleEl) return;
+
+        const episodeTitle = titleEl.textContent.trim();
+        // Try to find episode src from data attributes or construct from title
+        // For now, we'll use a simple mapping based on episode number or title
+        let episodeSrc = null;
+        const episodeNumberEl = card.querySelector('.title-detail__episode-card-number');
+        const episodeNumber = episodeNumberEl ? parseInt(episodeNumberEl.textContent.trim()) : null;
+        
+        if (episodeNumber === 1 || episodeTitle.includes('Day 1')) {
+          episodeSrc = 'https://zsbimpglrsvpwsbyzkbj.supabase.co/storage/v1/object/public/stream/pbb/Day%201/Day1.m3u8';
+        } else if (episodeNumber === 2 || episodeTitle.includes('Day 2')) {
+          episodeSrc = 'https://zsbimpglrsvpwsbyzkbj.supabase.co/storage/v1/object/public/stream/pbb/Day%202/Day2.m3u8';
+        } else if (episodeTitle.includes('highlight') || episodeTitle.includes('Highlight')) {
+          // For highlights, try to extract from title or use a default
+          episodeSrc = 'https://zsbimpglrsvpwsbyzkbj.supabase.co/storage/v1/object/public/stream/pbb/Highlights/Highlight1.m3u8';
+        }
+
+        if (episodeSrc) {
+          try {
+            const progress = await window.watchHistory.getProgress(episodeSrc, episodeTitle);
+            if (progress && progress.progressPercent > 0 && progress.progressPercent < 95) {
+              const progressBar = document.createElement('div');
+              progressBar.className = 'title-detail__episode-card-progress-bar';
+              
+              const progressFilled = document.createElement('div');
+              progressFilled.className = 'title-detail__episode-card-progress-filled';
+              progressFilled.style.width = `${progress.progressPercent}%`;
+              
+              progressBar.appendChild(progressFilled);
+              thumbnail.appendChild(progressBar);
+            }
+          } catch (e) {
+            console.error('Error loading progress:', e);
+          }
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(addProgressBarsToEpisodes, 1000);
+      
+      // Thumbnail fade-out and video play
+      const video = document.getElementById('hero-video');
+      const heroThumbnail = document.getElementById('hero-thumbnail');
+      
+      // Fade out thumbnail after 3 seconds and play video
+      if (heroThumbnail && video) {
+        // Ensure thumbnail is visible initially
+        heroThumbnail.style.display = 'block';
+        heroThumbnail.style.opacity = '1';
+        heroThumbnail.style.visibility = 'visible';
+        
+        // Pause video initially
+        video.pause();
+        
+        setTimeout(() => {
+          heroThumbnail.classList.add('fade-out');
+          
+          // Start playing video when thumbnail starts fading
+          if (video.paused) {
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+              playPromise.catch(error => {
+                console.log('Video autoplay failed:', error);
+              });
+            }
+          }
+          
+          // Remove from DOM after fade completes
+          setTimeout(() => {
+            if (heroThumbnail.parentNode) {
+              heroThumbnail.style.display = 'none';
+            }
+          }, 2500); // Wait for fade transition to complete
+        }, 3000);
+      }
+    });
+  </script>
+</body>
+</html>
+

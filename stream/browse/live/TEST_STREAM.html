@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Your Wowza Stream</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #000;
+      color: #fff;
+    }
+    .test-link {
+      display: block;
+      background: #e50914;
+      color: #fff;
+      padding: 15px 30px;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 4px;
+      margin: 20px 0;
+      font-size: 18px;
+    }
+    .test-link:hover {
+      background: #f40612;
+    }
+    code {
+      background: #2a2a2a;
+      padding: 10px;
+      border-radius: 4px;
+      display: block;
+      margin: 10px 0;
+      word-break: break-all;
+      color: #4ade80;
+    }
+    .info {
+      background: #1a1a1a;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      border-left: 4px solid #4ade80;
+    }
+  </style>
+</head>
+<body>
+  <h1>Test Your Wowza Live Stream</h1>
+  
+  <div class="info">
+    <h3>Your Stream URL:</h3>
+    <code>https://e7caae203136.entrypoint.cloud.wowza.com/app-mH0vX4r3/ngrp:e7dd6d88_all/playlist.m3u8</code>
+    <p>This is a master playlist with adaptive bitrate (multiple quality options).</p>
+  </div>
+
+  <a href="index.html?src=https://e7caae203136.entrypoint.cloud.wowza.com/app-mH0vX4r3/ngrp:e7dd6d88_all/playlist.m3u8&title=Live Stream" 
+     class="test-link" 
+     target="_blank">
+    ▶️ Open Live Player
+  </a>
+
+  <div class="info">
+    <h3>Stream Details:</h3>
+    <ul>
+      <li><strong>Format:</strong> HLS (M3U8) - Master Playlist</li>
+      <li><strong>Provider:</strong> Wowza Cloud</li>
+      <li><strong>Adaptive Bitrate:</strong> Yes (6 quality levels)</li>
+      <li><strong>Resolutions:</strong> 1280x720, 854x480, 640x360, 512x288, 320x180</li>
+    </ul>
+  </div>
+
+  <h3>Direct Player URL:</h3>
+  <code>live/index.html?src=https://e7caae203136.entrypoint.cloud.wowza.com/app-mH0vX4r3/ngrp:e7dd6d88_all/playlist.m3u8&title=Live Stream</code>
+
+  <p><a href="../index.html" style="color: #4ade80;">← Back to Browse</a></p>
+</body>
+</html>
+

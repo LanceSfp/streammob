@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Stream Examples</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #000;
+      color: #fff;
+    }
+    h1 { color: #e50914; }
+    .example {
+      background: #1a1a1a;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      border-left: 4px solid #e50914;
+    }
+    code {
+      background: #2a2a2a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #4ade80;
+    }
+    a {
+      color: #4ade80;
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <h1>Live Stream Player - Usage Examples</h1>
+
+  <div class="example">
+    <h2>1. Basic HLS Stream</h2>
+    <p>Link to a live HLS stream:</p>
+    <code>
+      live/index.html?src=https://example.com/live/stream.m3u8&title=My Live Channel
+    </code>
+    <p><a href="index.html?src=https://example.com/live/stream.m3u8&title=My Live Channel" target="_blank">Try it</a></p>
+  </div>
+
+  <div class="example">
+    <h2>2. Supabase Storage HLS Stream</h2>
+    <p>Link to a stream stored in Supabase:</p>
+    <code>
+      live/index.html?src=https://your-project.supabase.co/storage/v1/object/public/stream/live/channel.m3u8&title=Supabase Channel
+    </code>
+  </div>
+
+  <div class="example">
+    <h2>3. With Subtitles</h2>
+    <p>Add subtitles to your live stream:</p>
+    <code>
+      live/index.html?src=https://example.com/live/stream.m3u8&title=News Channel&subtitles=https://example.com/subtitles.vtt
+    </code>
+  </div>
+
+  <div class="example">
+    <h2>4. HTML Link Example</h2>
+    <p>How to create a link in your browse page:</p>
+    <pre><code>&lt;a href="live/index.html?src=https://example.com/live/stream.m3u8&title=Channel 1"&gt;
+  Watch Channel 1 Live
+&lt;/a&gt;</code></pre>
+  </div>
+
+  <div class="example">
+    <h2>5. JavaScript Dynamic Link</h2>
+    <p>Create links dynamically:</p>
+    <pre><code>const channel = {
+  name: 'News Channel',
+  url: 'https://example.com/live/news.m3u8'
+};
+
+const link = document.createElement('a');
+link.href = `live/index.html?src=${encodeURIComponent(channel.url)}&title=${encodeURIComponent(channel.name)}`;
+link.textContent = `Watch ${channel.name}`;</code></pre>
+  </div>
+
+  <h2>Stream Input Types Supported:</h2>
+  <ul>
+    <li><strong>HLS/M3U8</strong> - Recommended for live streams (adaptive bitrate, low latency)</li>
+    <li><strong>MP4/WebM</strong> - Regular video files (not ideal for live, but supported)</li>
+  </ul>
+
+  <h2>Getting Your Stream URL:</h2>
+  <ol>
+    <li>Set up a streaming service (AWS MediaLive, Wowza, OBS, etc.)</li>
+    <li>Configure it to output HLS format (.m3u8)</li>
+    <li>Get the public URL to your M3U8 playlist file</li>
+    <li>Use that URL in the <code>src</code> parameter</li>
+  </ol>
+
+  <p><a href="../index.html">← Back to Browse</a></p>
+</body>
+</html>
+

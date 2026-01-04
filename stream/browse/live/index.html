@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stream | Live Player</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../browse.css">
+  <link rel="stylesheet" href="player.css">
+</head>
+
+<body>
+  <div class="video-player" id="video-player">
+    <!-- Video Container -->
+    <div class="video-player__container">
+      <video class="video-player__video" id="video-element" playsinline autoplay>
+        <source src="" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+
+      <!-- Loading Spinner -->
+      <div class="video-player__loading" id="loading-spinner">
+        <div class="video-player__loading-spinner"></div>
+      </div>
+
+      <!-- Custom Subtitle Overlay -->
+      <div class="video-player__subtitle-overlay" id="subtitle-overlay"></div>
+
+      <!-- Controls Overlay -->
+      <div class="video-player__controls" id="controls">
+        <!-- Top Controls Bar -->
+        <div class="video-player__top-controls">
+          <button class="video-player__back-btn" id="back-btn" aria-label="Back to Browse">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Bottom Controls Bar -->
+        <div class="video-player__bottom-controls">
+          <div class="video-player__progress-container">
+            <div class="video-player__progress-bar" id="progress-bar">
+              <div class="video-player__progress-filled" id="progress-filled"></div>
+              <div class="video-player__progress-handle" id="progress-handle"></div>
+              <div class="video-player__progress-timestamp" id="progress-timestamp"></div>
+              <div class="video-player__progress-thumbnail" id="progress-thumbnail">
+                <img id="progress-thumbnail-img" src="" alt="Preview">
+              </div>
+            </div>
+          </div>
+
+          <div class="video-player__control-buttons">
+            <div class="video-player__left-controls">
+              <button class="video-player__play-btn" id="play-btn" aria-label="Play/Pause">
+                <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                  <rect x="6" y="4" width="4" height="16"></rect>
+                  <rect x="14" y="4" width="4" height="16"></rect>
+                </svg>
+              </button>
+
+              <button class="video-player__volume-btn" id="volume-btn" aria-label="Volume">
+                <svg class="volume-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                  <path class="volume-waves" d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                </svg>
+                <svg class="volume-muted-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  style="display: none;">
+                  <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                  <line x1="23" y1="9" x2="17" y2="15"></line>
+                  <line x1="17" y1="9" x2="23" y2="15"></line>
+                </svg>
+                <div class="video-player__volume-slider-container">
+                  <div class="video-player__volume-slider-track">
+                    <div class="video-player__volume-slider-filled" id="volume-slider-filled"></div>
+                    <input type="range" class="video-player__volume-slider" id="volume-slider" min="0" max="100"
+                      value="100" aria-label="Volume">
+                  </div>
+                </div>
+              </button>
+            </div>
+
+            <div class="video-player__episode-info" id="episode-info">
+              <span class="video-player__episode-info-show" id="episode-info-show">Live Channel</span>
+              <span class="video-player__episode-info-episode" id="episode-info-episode"></span>
+            </div>
+
+            <div class="video-player__right-controls">
+              <button class="video-player__fullscreen-btn" id="fullscreen-btn" aria-label="Fullscreen">
+                <svg class="fullscreen-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path
+                    d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3">
+                  </path>
+                </svg>
+                <svg class="fullscreen-exit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  style="display: none;">
+                  <path d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                </svg>
+              </button>
+              <div class="video-player__time-display" id="time-display">LIVE</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Panel -->
+      <div class="video-player__settings-panel" id="settings-panel">
+        <div class="video-player__settings-header">
+          <h3>Audio</h3>
+          <button class="video-player__settings-close" id="settings-close" aria-label="Close Settings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="video-player__settings-content">
+          <div class="video-player__settings-section">
+            <h4>Audio</h4>
+            <div class="video-player__settings-options" id="audio-tracks"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="../../auth.js"></script>
+  <script src="player.js"></script>
+</body>
+
+</html>

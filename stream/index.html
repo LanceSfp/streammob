@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stream | Watch Anywhere</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="../transition.css">
+</head>
+
+<body>
+  <main class="hero">
+    <div class="hero__bg"></div>
+    <div class="hero__fade"></div>
+
+    <div class="hero__shell">
+      <header class="topbar">
+        <div class="logo">STREAM</div>
+        <div class="topbar__actions">
+          <button class="pill pill--ghost">
+            <span class="pill__icon">🌐</span>
+            English
+          </button>
+          <a href="login/" class="pill pill--solid"
+            style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">Sign In</a>
+        </div>
+      </header>
+
+      <section class="hero__content">
+        <h1>Unlimited movies, TV shows, and more</h1>
+        <p class="hero__sub">Starts at ₱169. Cancel anytime.</p>
+        <p class="hero__prompt">
+          Ready to watch? Enter your email to create or restart your membership.
+        </p>
+        <form class="cta" action="#" method="post">
+          <label class="sr-only" for="email">Email address</label>
+          <input id="email" name="email" type="email" placeholder="Email address" required>
+          <button type="submit">Get Started</button>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js"></script>
+  <script src="home.js"></script>
+  <script src="../transition.js"></script>
+</body>
+
+</html>

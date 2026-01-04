@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stream | Browse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="browse.css">
+  <link rel="stylesheet" href="../../transition.css">
+  <style>
+    /* Critical dropdown styles - inline to prevent conflicts */
+    #profile-dropdown {
+      position: absolute !important;
+      top: 100% !important;
+      right: 0 !important;
+      background: rgba(0, 0, 0, 0.95) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      border-radius: 4px !important;
+      width: 200px !important;
+      padding: 4px 0 !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      z-index: 10000 !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.9) !important;
+      display: block !important;
+      color: #ffffff !important;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+      transition: none !important;
+      /* Remove transition to prevent conflicts */
+    }
+
+    #profile-dropdown.is-open,
+    #profile-dropdown[data-open="true"] {
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+    }
+
+    #profile-dropdown .nav__dropdown-item {
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      padding: 8px 12px !important;
+      color: #ffffff !important;
+      font-size: 0.875rem !important;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+      cursor: pointer !important;
+      white-space: nowrap !important;
+      line-height: 1.3 !important;
+      margin: 0 !important;
+      border: none !important;
+      background: transparent !important;
+      text-align: left !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    #profile-dropdown .nav__dropdown-item:hover {
+      background-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    #profile-dropdown .nav__dropdown-icon {
+      width: 14px !important;
+      height: 14px !important;
+      min-width: 14px !important;
+      min-height: 14px !important;
+      stroke: currentColor !important;
+      stroke-width: 2 !important;
+      fill: none !important;
+      flex-shrink: 0 !important;
+      opacity: 0.9 !important;
+      display: block !important;
+      color: #ffffff !important;
+    }
+
+    #profile-dropdown .nav__dropdown-avatar {
+      width: 20px !important;
+      height: 20px !important;
+      min-width: 20px !important;
+      min-height: 20px !important;
+      border-radius: 3px !important;
+      background: linear-gradient(135deg, #22c55e, #0ea5e9) !important;
+      flex-shrink: 0 !important;
+      display: block !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    #profile-dropdown .nav__dropdown-kids-logo {
+      width: 14px !important;
+      height: 14px !important;
+      min-width: 14px !important;
+      min-height: 14px !important;
+      flex-shrink: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    #profile-dropdown .nav__dropdown-kids-icon {
+      width: 100% !important;
+      height: 100% !important;
+      background: linear-gradient(135deg, #f97316, #e11d48, #8b5cf6, #22c55e) !important;
+      border-radius: 2px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 0.5rem !important;
+      font-weight: 700 !important;
+      color: white !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.2px !important;
+    }
+
+    #profile-dropdown .nav__dropdown-divider {
+      height: 1px !important;
+      background: rgba(255, 255, 255, 0.15) !important;
+      margin: 2px 0 !important;
+      padding: 0 !important;
+      border: none !important;
+      width: 100% !important;
+    }
+
+    #profile-dropdown span {
+      color: #ffffff !important;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+      display: inline-block !important;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="nav">
+    <div class="nav__left">
+      <div class="logo nav__logo">STREAM</div>
+      <nav class="nav__links">
+        <a href="#" class="nav__link nav__link--active">Home</a>
+        <a href="#" class="nav__link">Shows</a>
+        <a href="#" class="nav__link">Movies</a>
+        <a href="#" class="nav__link">New &amp; Popular</a>
+        <a href="#" class="nav__link">My List</a>
+        <a href="#" class="nav__link">Browse by Languages</a>
+      </nav>
+    </div>
+    <div class="nav__right">
+      <button class="nav__icon">🔍</button>
+      <button class="nav__icon">Kids</button>
+      <button class="nav__icon">🔔</button>
+      <div class="nav__profile-container">
+        <div class="nav__profile-trigger"
+          onclick="if(window.toggleProfileDropdown){event._dropdownHandled='inline_'+Date.now(); event.stopImmediatePropagation(); event.stopPropagation(); window.toggleProfileDropdown(event); return false;}"
+          onmousedown="event.stopPropagation(); event.stopImmediatePropagation();" style="cursor: pointer;">
+          <div class="nav__avatar"
+            onclick="if(window.toggleProfileDropdown){event._dropdownHandled='inline_'+Date.now(); event.stopImmediatePropagation(); event.stopPropagation(); window.toggleProfileDropdown(event); return false;}"
+            onmousedown="event.stopPropagation(); event.stopImmediatePropagation();" style="cursor: pointer;"></div>
+          <span class="nav__profile" id="nav-profile-label"
+            onclick="if(window.toggleProfileDropdown){event._dropdownHandled='inline_'+Date.now(); event.stopImmediatePropagation(); event.stopPropagation(); window.toggleProfileDropdown(event); return false;}"
+            onmousedown="event.stopPropagation(); event.stopImmediatePropagation();" style="cursor: pointer;"></span>
+          <span class="nav__profile-arrow"
+            onclick="if(window.toggleProfileDropdown){event._dropdownHandled='inline_'+Date.now(); event.stopImmediatePropagation(); event.stopPropagation(); window.toggleProfileDropdown(event); return false;}"
+            onmousedown="event.stopPropagation(); event.stopImmediatePropagation();" style="cursor: pointer;">▼</span>
+        </div>
+        <div class="nav__dropdown" id="profile-dropdown" data-open="false">
+          <div class="nav__dropdown-item nav__dropdown-item--active" id="current-profile-item"
+            onclick="event.stopPropagation(); event.stopImmediatePropagation(); if(window.redirectToProfiles){window.redirectToProfiles(event);} else {window.location.href='../profiles/';}"
+            style="cursor: pointer;">
+            <div class="nav__dropdown-avatar" id="dropdown-avatar"></div>
+            <div class="nav__dropdown-kids-logo" id="profile-kids-logo" style="display: none;">
+              <div class="nav__dropdown-kids-icon">kids</div>
+            </div>
+            <span id="profile-name-text">Profile</span>
+            <span class="nav__profile-arrow nav__dropdown-arrow">▼</span>
+          </div>
+          <div class="nav__dropdown-item" id="manage-profiles">
+            <svg class="nav__dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            <span>Manage Profiles</span>
+          </div>
+          <div class="nav__dropdown-item" id="transfer-profile">
+            <svg class="nav__dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span>Transfer Profile</span>
+          </div>
+          <div class="nav__dropdown-item" id="account">
+            <svg class="nav__dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Account</span>
+          </div>
+          <div class="nav__dropdown-item" id="help-center">
+            <svg class="nav__dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            <span>Help Center</span>
+          </div>
+          <div class="nav__dropdown-divider"></div>
+          <div class="nav__dropdown-item nav__dropdown-item--signout" id="sign-out">
+            <span>Sign out of Stream</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="browse">
+    <section class="hero-banner">
+      <div class="hero-banner__thumbnail" id="hero-thumbnail" style="display: block; opacity: 1; visibility: visible;">
+        <img src="players/thumb.jpeg" alt="Pinoy Big Brother" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+      </div>
+      <video class="hero-banner__video" id="hero-video" loop playsinline preload="auto" webkit-playsinline
+        crossorigin="anonymous">
+        <source
+          src="https://zsbimpglrsvpwsbyzkbj.supabase.co/storage/v1/object/sign/stream/pbbpreview.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZWM5YjY2MS05MzE0LTQwODAtYmU4NS1iMjJjYTc3YmUxMTMiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzdHJlYW0vcGJicHJldmlldy5tcDQiLCJpYXQiOjE3NjY1NDYzOTEsImV4cCI6MjA4MTkwNjM5MX0.z_xVpZPnyaRMZ-8namUoqzqZyEkO7yCzhKsuxAzwnYU"
+          type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="hero-banner__overlay"></div>
+      <div class="hero-banner__subtitle-overlay" id="subtitle-overlay"></div>
+      <div class="hero-banner__controls">
+        <button class="hero-banner__volume-btn" id="volume-btn" aria-label="Toggle volume">
+          <svg class="hero-banner__volume-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+            <path class="hero-banner__volume-waves" d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07">
+            </path>
+          </svg>
+        </button>
+        <div class="hero-banner__separator"></div>
+        <div class="hero-banner__rating">TV-PG</div>
+      </div>
+      <div class="hero-banner__content">
+        <div class="hero-banner__meta">
+          <span class="hero-banner__tag">REALITY SHOW</span>
+          <h1 class="hero-banner__title">
+            <img src="pbblogo.png" alt="Pinoy Big Brother Roblox Edition"
+              style="max-width: 60%; height: auto; display: block;">
+          </h1>
+          <p class="hero-banner__subtitle">
+            Reality Show that explores how individuals interact and socialize in a one house. This test the honesty and
+            social skill of the person. Discover the journey of roblox users on how they face every challenges and tasks
+            given by Big Brother.
+          </p>
+        </div>
+        <div class="hero-banner__actions">
+          <button class="hero-banner__btn hero-banner__btn--primary">
+            ▶ Play
+          </button>
+          <a href="titles/pinoy-big-brother/" class="hero-banner__btn hero-banner__btn--secondary"
+            style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">
+            ℹ More Info
+          </a>
+        </div>
+      </div>
+      <div class="hero-banner__edge-fade"></div>
+    </section>
+
+    <section class="rows">
+      <!-- Continue Watching Section -->
+      <article class="row" id="continue-watching-row" style="display: none;">
+        <h2 class="row__title">Continue Watching</h2>
+        <div class="row__rail" id="continue-watching-rail">
+          <!-- Continue watching items will be rendered here -->
+        </div>
+      </article>
+
+      <article class="row">
+        <h2 class="row__title">Today's Top Picks for You</h2>
+        <div class="row__rail">
+          <a href="titles/pinoy-big-brother/" class="tile tile--top"
+            style="background-image: url('pbb.png'); background-size: cover; background-position: center; text-decoration: none; display: block;">
+            <span class="tile__badge">Top 10</span>
+          </a>
+          <div class="tile tile--top"></div>
+          <div class="tile tile--top"></div>
+          <div class="tile tile--top"></div>
+          <div class="tile tile--top"></div>
+        </div>
+      </article>
+
+      <article class="row">
+        <h2 class="row__title">Live Channels</h2>
+        <div class="row__rail">
+          <a href="live/index.html?src=https://e7caae203136.entrypoint.cloud.wowza.com/app-mH0vX4r3/ngrp:e7dd6d88_all/playlist.m3u8&title=Live Stream" 
+             class="tile"
+             style="background-image: url('pbbaals.gif'); background-size: cover; background-position: center; text-decoration: none; display: block;">
+          </a>
+          <a href="live/hangout.html" 
+             class="tile"
+             style="background-image: url('lslh.gif'); background-size: cover; background-position: center; text-decoration: none; display: block;">
+          </a>
+          <div class="tile"></div>
+          <div class="tile"></div>
+          <div class="tile"></div>
+        </div>
+      </article>
+
+      <article class="row">
+        <h2 class="row__title">Collections</h2>
+        <div class="row__rail">
+          <div class="tile"></div>
+          <div class="tile"></div>
+          <div class="tile"></div>
+          <div class="tile"></div>
+          <div class="tile"></div>
+        </div>
+      </article>
+
+      <article class="row row--top-titles">
+        <h2 class="row__title">Top Titles Today</h2>
+        <div class="row__rail row__rail--top-titles">
+          <div class="tile-numbered">
+            <span class="tile-numbered__number">1</span>
+            <a href="titles/pinoy-big-brother/" class="tile-numbered__thumb"
+              style="background-image: url('pbb.png');"></a>
+          </div>
+          <div class="tile-numbered">
+            <span class="tile-numbered__number">2</span>
+            <div class="tile-numbered__thumb" style="background: linear-gradient(135deg, #4b5563, #1e293b);"></div>
+          </div>
+          <div class="tile-numbered">
+            <span class="tile-numbered__number">3</span>
+            <div class="tile-numbered__thumb" style="background: linear-gradient(135deg, #7c3aed, #1e293b);"></div>
+          </div>
+          <div class="tile-numbered">
+            <span class="tile-numbered__number">4</span>
+            <div class="tile-numbered__thumb" style="background: linear-gradient(135deg, #dc2626, #1e293b);"></div>
+          </div>
+          <div class="tile-numbered">
+            <span class="tile-numbered__number">5</span>
+            <div class="tile-numbered__thumb" style="background: linear-gradient(135deg, #0ea5e9, #1e293b);"></div>
+          </div>
+          <div class="tile-numbered">
+            <span class="tile-numbered__number">6</span>
+            <div class="tile-numbered__thumb" style="background: linear-gradient(135deg, #f97316, #1e293b);"></div>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../auth.js"></script>
+  <script src="watch-history.js"></script>
+  <script src="browse.js"></script>
+  <script>
+    // Manual test function - call this in console to test Continue Watching
+    window.testContinueWatching = async function () {
+      console.log('=== Testing Continue Watching ===');
+      console.log('watchHistory available:', !!window.watchHistory);
+
+      if (!window.watchHistory) {
+        if (typeof WatchHistory !== 'undefined') {
+          window.watchHistory = new WatchHistory();
+          await window.watchHistory.init();
+        } else {
+          console.error('WatchHistory class not found');
+          return;
+        }
+      }
+
+      const history = await window.watchHistory.getAllHistory(20);
+      console.log('History:', history);
+      console.log('History length:', history ? history.length : 0);
+
+      // Check localStorage directly
+      const profileData = localStorage.getItem('activeProfile');
+      const profile = profileData ? JSON.parse(profileData) : null;
+      const profileId = profile?.id || 'default';
+      const key = `watch_history_${profileId}`;
+      const stored = localStorage.getItem(key);
+      console.log('LocalStorage key:', key);
+      console.log('LocalStorage data:', stored);
+
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        console.log('Parsed localStorage:', parsed);
+        console.log('Object keys:', Object.keys(parsed));
+        console.log('Object values:', Object.values(parsed));
+      }
+    };
+  </script>
+  <script>
+    // Load and display subtitles in custom overlay at bottom
+    function loadSubtitlesFallback() {
+      const video = document.getElementById('hero-video');
+      const subtitleOverlay = document.getElementById('subtitle-overlay');
+      if (!video || !subtitleOverlay) {
+        console.error('Video or subtitle overlay not found');
+        return;
+      }
+
+      // Hide all native text tracks immediately
+      function hideNativeTracks() {
+        const tracks = video.textTracks;
+        for (let i = 0; i < tracks.length; i++) {
+          tracks[i].mode = 'hidden';
+        }
+      }
+
+      // Hide tracks when video loads
+      video.addEventListener('loadedmetadata', hideNativeTracks);
+      video.addEventListener('loadstart', hideNativeTracks);
+
+      // Also try immediately
+      hideNativeTracks();
+
+      const vttUrl = 'https://zsbimpglrsvpwsbyzkbj.supabase.co/storage/v1/object/sign/stream/pbbpreview.vtt?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZWM5YjY2MS05MzE0LTQwODAtYmU4NS1iMjJjYTc3YmUxMTMiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzdHJlYW0vcGJicHJldmlldy52dHQiLCJpYXQiOjE3NjY1NTEwNTQsImV4cCI6MjA4MTkxMTA1NH0.uLBGLL4eCwvbrkpI3jrDrfdz3XzrkRurFu291t72osI';
+
+      console.log('Loading subtitles...');
+
+      // Always fetch VTT file directly for more control
+      fetch(vttUrl)
+        .then(response => {
+          if (!response.ok) throw new Error('Failed to fetch VTT: ' + response.status);
+          console.log('VTT file fetched successfully');
+          return response.text();
+        })
+        .then(vttText => {
+          console.log('VTT text received, length:', vttText.length);
+
+          // Parse VTT manually and store cues
+          const cues = [];
+          const lines = vttText.split('\n');
+          let currentCue = null;
+
+          for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+
+            if (line.includes('-->')) {
+              // Save previous cue
+              if (currentCue && currentCue.text) {
+                cues.push(currentCue);
+              }
+
+              // Parse timecode
+              const parts = line.split('-->');
+              if (parts.length === 2) {
+                const start = parts[0].trim();
+                const end = parts[1].trim().split(' ')[0]; // Remove any positioning info
+                currentCue = {
+                  start: parseVTTTime(start),
+                  end: parseVTTTime(end),
+                  text: ''
+                };
+              }
+            } else if (currentCue && line && !line.match(/^\d+$/) && line !== 'WEBVTT' && !line.includes('-->') && !line.startsWith('line:')) {
+              // Text line
+              if (currentCue.text) {
+                currentCue.text += ' ' + line;
+              } else {
+                currentCue.text = line;
+              }
+            }
+          }
+
+          // Add last cue
+          if (currentCue && currentCue.text) {
+            cues.push(currentCue);
+          }
+
+          console.log('Parsed', cues.length, 'subtitle cues');
+
+          // Set up subtitle display with parsed cues
+          setupSubtitleDisplayFromCues(cues);
+        })
+        .catch(error => {
+          console.error('Failed to load subtitles:', error);
+        });
+    }
+
+    // Display subtitles from parsed cues array
+    function setupSubtitleDisplayFromCues(cues) {
+      const video = document.getElementById('hero-video');
+      const subtitleOverlay = document.getElementById('subtitle-overlay');
+      if (!video || !subtitleOverlay || !cues || cues.length === 0) {
+        console.error('setupSubtitleDisplayFromCues: Missing elements or cues', { video: !!video, subtitleOverlay: !!subtitleOverlay, cuesCount: cues ? cues.length : 0 });
+        return;
+      }
+
+      console.log('Setting up subtitle display with', cues.length, 'cues');
+
+      // Force subtitle overlay to be visible and positioned correctly
+      subtitleOverlay.style.cssText = 'position: absolute !important; bottom: 70px !important; left: 50% !important; transform: translateX(-50%) !important; background: rgba(0, 0, 0, 0.9) !important; color: #ffffff !important; z-index: 10000 !important; padding: 10px 20px !important; border-radius: 4px !important; font-size: 1.1rem !important; font-weight: 600 !important; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9) !important; max-width: 80% !important; text-align: center !important; opacity: 0 !important; visibility: hidden !important; display: block !important; pointer-events: none !important;';
+
+      // Update subtitle display based on video time
+      function updateSubtitle() {
+        if (!video || video.paused) return;
+
+        const currentTime = video.currentTime;
+        let activeCue = null;
+
+        // Find active cue
+        for (let i = 0; i < cues.length; i++) {
+          const cue = cues[i];
+          if (currentTime >= cue.start && currentTime <= cue.end) {
+            activeCue = cue;
+            break;
+          }
+        }
+
+        // Display subtitle
+        if (activeCue && activeCue.text) {
+          subtitleOverlay.textContent = activeCue.text;
+          subtitleOverlay.style.setProperty('opacity', '1', 'important');
+          subtitleOverlay.style.setProperty('visibility', 'visible', 'important');
+          subtitleOverlay.style.setProperty('display', 'block', 'important');
+          subtitleOverlay.classList.add('show');
+        } else {
+          subtitleOverlay.style.setProperty('opacity', '0', 'important');
+          subtitleOverlay.style.setProperty('visibility', 'hidden', 'important');
+          subtitleOverlay.classList.remove('show');
+        }
+      }
+
+      // Update on timeupdate
+      video.addEventListener('timeupdate', updateSubtitle);
+
+      // Also update immediately
+      updateSubtitle();
+
+      // Set up interval as backup (check every 100ms)
+      setInterval(updateSubtitle, 100);
+
+      console.log('Subtitle display setup complete');
+    }
+
+
+    function parseVTTTime(timeStr) {
+      // Parse VTT time format: HH:MM:SS.mmm
+      const parts = timeStr.split(':');
+      if (parts.length === 3) {
+        const hours = parseFloat(parts[0]) || 0;
+        const minutes = parseFloat(parts[1]) || 0;
+        const seconds = parseFloat(parts[2]) || 0;
+        return hours * 3600 + minutes * 60 + seconds;
+      }
+      return 0;
+    }
+
+    // Ensure video plays with audio and setup volume control
+    document.addEventListener('DOMContentLoaded', function () {
+      const video = document.getElementById('hero-video');
+      const subtitleOverlay = document.getElementById('subtitle-overlay');
+      const heroThumbnail = document.getElementById('hero-thumbnail');
+      
+      // Fade out thumbnail after 3 seconds and play video
+      if (heroThumbnail && video) {
+        // Ensure thumbnail is visible initially
+        heroThumbnail.style.display = 'block';
+        heroThumbnail.style.opacity = '1';
+        heroThumbnail.style.visibility = 'visible';
+        
+        // Pause video initially
+        video.pause();
+        
+        setTimeout(() => {
+          heroThumbnail.classList.add('fade-out');
+          
+          // Start playing video when thumbnail starts fading
+          if (video.paused) {
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+              playPromise.catch(error => {
+                console.log('Video autoplay failed:', error);
+              });
+            }
+          }
+          
+          // Remove from DOM after fade completes
+          setTimeout(() => {
+            if (heroThumbnail.parentNode) {
+              heroThumbnail.style.display = 'none';
+            }
+          }, 2500); // Wait for fade transition to complete
+        }, 3000);
+      }
+
+      // Force subtitle overlay to be visible and positioned correctly
+      if (subtitleOverlay) {
+        subtitleOverlay.style.cssText = 'position: absolute !important; bottom: 70px !important; left: 50% !important; transform: translateX(-50%) !important; background: rgba(0, 0, 0, 0.9) !important; color: #ffffff !important; z-index: 10000 !important; padding: 10px 20px !important; border-radius: 4px !important; font-size: 1.1rem !important; font-weight: 600 !important; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9) !important; max-width: 80% !important; text-align: center !important; opacity: 0 !important; visibility: hidden !important; display: block !important; pointer-events: none !important;';
+      }
+
+      // Try fallback subtitle loading
+      loadSubtitlesFallback();
+      const volumeBtn = document.getElementById('volume-btn');
+
+      if (video) {
+        // Set initial volume to full and ensure not muted
+        video.volume = 1;
+        video.muted = false;
+
+        // Try to play with audio
+        const playPromise = video.play();
+
+        if (playPromise !== undefined) {
+          playPromise.then(function () {
+            // Video is playing, ensure audio is enabled
+            video.muted = false;
+            video.volume = 1;
+            console.log('Video playing with audio');
+          }).catch(function (error) {
+            console.log('Video autoplay failed:', error);
+            // Some browsers require muted autoplay, so we'll start muted but allow user to unmute
+            if (error.name === 'NotAllowedError') {
+              video.muted = true;
+              console.log('Autoplay blocked, starting muted. User can unmute.');
+            }
+            // Try playing again after user interaction
+            document.addEventListener('click', function playVideo() {
+              video.muted = false;
+              video.play().catch(function (err) {
+                console.log('Video play failed:', err);
+              });
+              document.removeEventListener('click', playVideo);
+            }, { once: true });
+          });
+        }
+      }
+
+      // Volume control button
+      if (volumeBtn && video) {
+        // Update button state based on video muted status
+        function updateVolumeButton() {
+          if (video.muted || video.volume === 0) {
+            volumeBtn.classList.add('muted');
+          } else {
+            volumeBtn.classList.remove('muted');
+          }
+        }
+
+        // Initial state - check after a short delay to ensure video is loaded
+        setTimeout(function () {
+          updateVolumeButton();
+        }, 100);
+
+        // Toggle mute on click
+        volumeBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          if (video.muted) {
+            video.muted = false;
+            video.volume = 1;
+          } else {
+            video.muted = true;
+          }
+          updateVolumeButton();
+        });
+
+        // Listen for video muted/volume changes
+        video.addEventListener('volumechange', updateVolumeButton);
+        video.addEventListener('loadedmetadata', function () {
+          video.muted = false;
+          video.volume = 1;
+          updateVolumeButton();
+        });
+      }
+
+      // Setup scroll-based pause/play functionality with audio fade transitions
+      const heroBanner = document.querySelector('.hero-banner');
+      if (video && heroBanner) {
+        // Variables to track fade state
+        let fadeAnimationId = null;
+        let isFading = false;
+        const fadeDuration = 500; // 500ms fade duration
+        const targetVolume = 1; // Full volume
+
+        // Function to fade out audio
+        function fadeOutAudio(callback) {
+          if (isFading) return; // Prevent multiple fades
+          isFading = true;
+
+          const startVolume = video.volume;
+          const startTime = performance.now();
+
+          function animate(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / fadeDuration, 1);
+
+            // Ease out curve for smooth fade
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            video.volume = startVolume * (1 - easeOut);
+
+            if (progress < 1) {
+              fadeAnimationId = requestAnimationFrame(animate);
+            } else {
+              video.volume = 0;
+              isFading = false;
+              fadeAnimationId = null;
+              if (callback) callback();
+            }
+          }
+
+          fadeAnimationId = requestAnimationFrame(animate);
+        }
+
+        // Function to fade in audio
+        function fadeInAudio(callback) {
+          if (isFading) return; // Prevent multiple fades
+          isFading = true;
+
+          const startVolume = video.volume;
+          const startTime = performance.now();
+
+          function animate(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / fadeDuration, 1);
+
+            // Ease in curve for smooth fade
+            const easeIn = Math.pow(progress, 3);
+            video.volume = startVolume + (targetVolume - startVolume) * easeIn;
+
+            if (progress < 1) {
+              fadeAnimationId = requestAnimationFrame(animate);
+            } else {
+              video.volume = targetVolume;
+              isFading = false;
+              fadeAnimationId = null;
+              if (callback) callback();
+            }
+          }
+
+          fadeAnimationId = requestAnimationFrame(animate);
+        }
+
+        // Use Intersection Observer to detect when hero banner is in view
+        const observerOptions = {
+          root: null, // Use viewport as root
+          rootMargin: '0px',
+          threshold: 0.1 // Trigger when 10% of the banner is visible
+        };
+
+        const observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            // Cancel any ongoing fade
+            if (fadeAnimationId) {
+              cancelAnimationFrame(fadeAnimationId);
+              fadeAnimationId = null;
+              isFading = false;
+            }
+
+            if (entry.isIntersecting) {
+              // Hero banner is visible - play video with fade in
+              if (video.paused) {
+                // Start playing first, then fade in
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                  playPromise.then(function () {
+                    video.volume = 0; // Start at 0 volume
+                    fadeInAudio();
+                  }).catch(function (error) {
+                    console.log('Video play on scroll failed:', error);
+                  });
+                }
+              } else if (video.volume < targetVolume) {
+                // Video is already playing but volume is low - fade in
+                fadeInAudio();
+              }
+            } else {
+              // Hero banner is not visible - fade out then pause
+              if (!video.paused && video.volume > 0) {
+                fadeOutAudio(function () {
+                  // Pause after fade out completes
+                  video.pause();
+                });
+              } else if (!video.paused) {
+                // If already at 0 volume, just pause
+                video.pause();
+              }
+            }
+          });
+        }, observerOptions);
+
+        // Start observing the hero banner
+        observer.observe(heroBanner);
+        console.log('Scroll-based pause/play with audio fade initialized');
+      }
+    });
+  </script>
+  <script>
+    // CRITICAL: Define toggleProfileDropdown IMMEDIATELY in HTML
+    // This ensures it's available even if browse.js fails to load or has errors
+    console.log('HTML: Setting up toggleProfileDropdown function');
+
+    // Flag to prevent immediate closing after opening
+    window._dropdownJustOpened = false;
+
+    // Global state for dropdown
+    window._dropdownState = {
+      isOpening: false,
+      isOpen: false,
+      openTime: 0,
+      ignoreClicksUntil: 0,
+      lastToggleTime: 0,
+      clickSequence: []
+    };
+
+    // Track all click events for debugging
+    window._clickTracker = [];
+
+    window.toggleProfileDropdown = function (e) {
+      const now = Date.now();
+      const clickId = 'click_' + now + '_' + Math.random().toString(36).substr(2, 9);
+
+      console.log('=== toggleProfileDropdown called ===', clickId);
+      console.log('Event:', e);
+      console.log('Event type:', e ? e.type : 'none');
+      console.log('Event target:', e ? e.target : 'none');
+      console.log('Event currentTarget:', e ? e.currentTarget : 'none');
+      console.log('Event phase:', e ? e.eventPhase : 'none');
+      console.log('Event bubbles:', e ? e.bubbles : 'none');
+      console.log('Current state:', JSON.parse(JSON.stringify(window._dropdownState)));
+
+      // Track this click
+      window._clickTracker.push({
+        id: clickId,
+        time: now,
+        type: 'toggle',
+        target: e ? e.target : null,
+        state: JSON.parse(JSON.stringify(window._dropdownState))
+      });
+
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        // Mark this event as handled with unique ID
+        e._dropdownHandled = clickId;
+        e._dropdownToggleTime = now;
+        console.log('Event marked as handled:', clickId);
+      }
+
+      const dd = document.getElementById('profile-dropdown');
+      const container = document.querySelector('.nav__profile-container');
+
+      if (!dd) {
+        console.error('Dropdown element not found');
+        return false;
+      }
+
+      const isOpen = dd.classList.contains('is-open') || dd.getAttribute('data-open') === 'true' || window._dropdownState.isOpen;
+
+      console.log('Dropdown state check - isOpen:', isOpen, 'classList:', dd.classList.toString(), 'data-open:', dd.getAttribute('data-open'));
+
+      if (isOpen && !window._dropdownState.isOpening) {
+        console.log('CLOSING dropdown', clickId);
+        window._dropdownState.isOpen = false;
+        window._dropdownState.isOpening = false;
+        window._dropdownState.lastToggleTime = now;
+        dd.classList.remove('is-open');
+        dd.setAttribute('data-open', 'false');
+        dd.style.setProperty('opacity', '0', 'important');
+        dd.style.setProperty('visibility', 'hidden', 'important');
+        dd.style.setProperty('pointer-events', 'none', 'important');
+        return false;
+      } else {
+        console.log('OPENING dropdown', clickId);
+
+        // Set opening state IMMEDIATELY - BEFORE anything else
+        window._dropdownState.isOpening = true;
+        window._dropdownState.isOpen = true;
+        window._dropdownState.openTime = now;
+        window._dropdownState.lastToggleTime = now;
+        window._dropdownState.ignoreClicksUntil = now + 1000; // Ignore clicks for 1 second
+
+        console.log('State updated:', JSON.parse(JSON.stringify(window._dropdownState)));
+
+        // Open the dropdown
+        dd.classList.add('is-open');
+        dd.setAttribute('data-open', 'true');
+        dd.style.setProperty('opacity', '1', 'important');
+        dd.style.setProperty('visibility', 'visible', 'important');
+        dd.style.setProperty('pointer-events', 'auto', 'important');
+        dd.style.setProperty('display', 'block', 'important');
+        dd.style.setProperty('position', 'absolute', 'important');
+        dd.style.setProperty('top', '100%', 'important');
+        dd.style.setProperty('right', '0', 'important');
+        dd.style.setProperty('z-index', '10000', 'important');
+
+        console.log('Dropdown opened, checking visibility...');
+
+        // Mark as no longer opening after a brief moment
+        setTimeout(() => {
+          window._dropdownState.isOpening = false;
+          console.log('Dropdown opening phase complete', clickId);
+        }, 200);
+
+        // Verify it's visible
+        setTimeout(() => {
+          const computed = window.getComputedStyle(dd);
+          const isActuallyVisible = computed.opacity !== '0' && computed.visibility !== 'hidden';
+          console.log('After opening - computed styles:', {
+            opacity: computed.opacity,
+            visibility: computed.visibility,
+            display: computed.display,
+            isActuallyVisible: isActuallyVisible,
+            clickId: clickId
+          });
+
+          if (!isActuallyVisible) {
+            console.log('Still hidden, forcing again', clickId);
+            dd.style.setProperty('opacity', '1', 'important');
+            dd.style.setProperty('visibility', 'visible', 'important');
+            dd.style.setProperty('display', 'block', 'important');
+            window._dropdownState.isOpen = true;
+          }
+        }, 50);
+
+        return false;
+      }
+    };
+
+    // Add global click tracker for debugging - use capture phase to see events early
+    // But don't interfere with the dropdown logic
+    document.addEventListener('click', function (e) {
+      const now = Date.now();
+      const clickId = 'doc_click_' + now + '_' + Math.random().toString(36).substr(2, 9);
+
+      // Check if this is a dropdown-related click BEFORE tracking
+      const container = document.querySelector('.nav__profile-container');
+      const isDropdownClick = container && container.contains(e.target);
+
+      // If it's a dropdown click and not already handled, mark it immediately
+      if (isDropdownClick && !e._dropdownHandled) {
+        e._dropdownHandled = 'tracker_' + clickId;
+        e._dropdownToggleTime = now;
+        console.log('Document click tracker: Marked dropdown click as handled', clickId);
+      }
+
+      window._clickTracker.push({
+        id: clickId,
+        time: now,
+        type: 'document',
+        target: e.target,
+        handled: e._dropdownHandled,
+        handledId: e._dropdownHandled,
+        toggleTime: e._dropdownToggleTime,
+        state: window._dropdownState ? JSON.parse(JSON.stringify(window._dropdownState)) : null
+      });
+
+      // Only log if it's relevant to dropdown
+      const dropdown = document.getElementById('profile-dropdown');
+      const isRelevant = isDropdownClick ||
+        (dropdown && dropdown.contains(e.target)) ||
+        (window._dropdownState && window._dropdownState.isOpen);
+
+      if (isRelevant) {
+        console.log('Document click detected:', {
+          id: clickId,
+          target: e.target,
+          handled: e._dropdownHandled,
+          handledId: e._dropdownHandled,
+          isDropdownClick: isDropdownClick,
+          state: window._dropdownState ? JSON.parse(JSON.stringify(window._dropdownState)) : null
+        });
+      }
+    }, { capture: true });
+
+    // Expose debug function
+    window.debugDropdown = function () {
+      console.log('=== DROPDOWN DEBUG INFO ===');
+      console.log('State:', window._dropdownState);
+      console.log('Click tracker (last 10):', window._clickTracker.slice(-10));
+      console.log('Dropdown element:', document.getElementById('profile-dropdown'));
+      console.log('Container element:', document.querySelector('.nav__profile-container'));
+      const dd = document.getElementById('profile-dropdown');
+      if (dd) {
+        console.log('Dropdown computed styles:', window.getComputedStyle(dd));
+        console.log('Dropdown classes:', dd.classList.toString());
+        console.log('Dropdown data-open:', dd.getAttribute('data-open'));
+      }
+    };
+    console.log('HTML: toggleProfileDropdown set:', typeof window.toggleProfileDropdown);
+
+    // Debug: Log when page loads
+    console.log('=== PAGE LOAD DEBUG ===');
+    console.log('Page loaded, readyState:', document.readyState);
+    console.log('Current URL:', window.location.href);
+    console.log('Scripts starting to load...');
+
+    // Check script paths
+    const scripts = document.querySelectorAll('script[src]');
+    console.log('Script tags found:', scripts.length);
+    scripts.forEach((script, i) => {
+      console.log(`Script ${i}:`, script.src || script.getAttribute('src'));
+    });
+
+    // Check if Supabase loaded
+    window.addEventListener('load', () => {
+      console.log('=== WINDOW LOADED ===');
+      console.log('Supabase available:', typeof window.supabase !== 'undefined');
+      console.log('Auth.js available:', typeof initSupabase !== 'undefined');
+      console.log('Browse.js toggleProfileDropdown:', typeof window.toggleProfileDropdown !== 'undefined');
+
+      // Check for script loading errors
+      const failedScripts = [];
+      scripts.forEach(script => {
+        if (!script.src) return;
+        const test = new Image();
+        test.onerror = () => {
+          console.warn('Possible script loading issue:', script.src);
+        };
+      });
+    });
+  </script>
+  <script src="../auth.js" onerror="console.error('Failed to load auth.js')"
+    onload="console.log('auth.js loaded successfully')"></script>
+  <script src="browse.js" onerror="console.error('Failed to load browse.js')"
+    onload="console.log('browse.js loaded successfully')"></script>
+  <script>
+    // Debug: Check if browse.js initialized
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        console.log('After load - toggleProfileDropdown available:', typeof window.toggleProfileDropdown !== 'undefined');
+        console.log('After load - testDropdown available:', typeof window.testDropdown !== 'undefined');
+
+        // Check if dropdown element exists
+        const dropdown = document.getElementById('profile-dropdown');
+        console.log('Dropdown element found:', !!dropdown);
+        if (dropdown) {
+          console.log('Dropdown classes:', dropdown.className);
+          console.log('Dropdown data-open:', dropdown.getAttribute('data-open'));
+          console.log('Dropdown computed styles:', {
+            display: window.getComputedStyle(dropdown).display,
+            opacity: window.getComputedStyle(dropdown).opacity,
+            visibility: window.getComputedStyle(dropdown).visibility
+          });
+        }
+
+        // Check profile trigger
+        const trigger = document.querySelector('.nav__profile-trigger');
+        console.log('Profile trigger found:', !!trigger);
+        if (trigger) {
+          console.log('Trigger onclick:', trigger.getAttribute('onclick'));
+        }
+      }, 500);
+    });
+  </script>
+  console.log('HTML: Setting up toggleProfileDropdown function');
+  /* ... (rest of the script) ... */
+  // I can't effectively replace the end of the file without reading the very end.
+  // I will use append to body end replacement matching
+</body>
+<script src="../../transition.js"></script>
+</body>
+
+</html>

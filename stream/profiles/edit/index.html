@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stream | Edit Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="edit.css">
+</head>
+
+<body>
+  <main class="edit-profile">
+    <header class="edit-profile__header">
+      <button class="edit-profile__back" onclick="window.history.back()" aria-label="Back">
+        &#8592;
+      </button>
+      <h1>Edit Profile</h1>
+    </header>
+
+    <section class="edit-profile__card">
+      <div class="edit-profile__avatar" id="edit-profile-avatar">
+        <div class="edit-profile__avatar-icon" id="edit-profile-avatar-icon">🙂</div>
+        <span class="edit-profile__avatar-edit" aria-hidden="true">✏️</span>
+      </div>
+
+      <form class="edit-profile__form" id="edit-profile-form">
+        <label class="edit-profile__label" for="edit-profile-name">Name</label>
+        <input id="edit-profile-name" name="name" type="text" maxlength="20" autocomplete="off">
+      </form>
+    </section>
+
+    <section class="edit-profile__section">
+      <h2 class="edit-profile__section-title">Game Handle</h2>
+      <p class="edit-profile__section-text">
+        Your handle is a unique name that’ll be used for playing with other Stream members across all Stream Games.
+      </p>
+      <button class="edit-profile__button edit-profile__button--outline" type="button">
+        Create Game Handle
+      </button>
+    </section>
+
+    <section class="edit-profile__section">
+      <h2 class="edit-profile__section-title">Contact Info</h2>
+
+      <div class="edit-profile__row">
+        <div class="edit-profile__row-icon">✉️</div>
+        <div class="edit-profile__row-main">
+          <div class="edit-profile__row-title">Email</div>
+          <div class="edit-profile__row-sub" id="edit-profile-email">example@email.com</div>
+        </div>
+        <div class="edit-profile__row-chevron">&rsaquo;</div>
+      </div>
+
+      <p class="edit-profile__section-note">
+        The email associated with this profile is also used for account access and recovery.
+      </p>
+    </section>
+
+    <div class="edit-profile__actions">
+      <button class="edit-profile__delete" id="edit-profile-delete" type="button">Delete Profile</button>
+      <button class="edit-profile__save" id="edit-profile-save" type="button">Save</button>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../../auth.js"></script>
+  <script src="edit.js"></script>
+</body>
+
+</html>

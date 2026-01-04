@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stream | Who's watching?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="profiles.css">
+</head>
+<body>
+  <main class="profiles">
+    <section class="profiles__center">
+      <h1>Who's watching?</h1>
+
+      <div class="profiles__grid" id="profiles-grid">
+        <!-- Profiles rendered by JS -->
+      </div>
+
+      <p class="profiles__limit" id="profiles-limit" hidden>Limit reached: up to 5 profiles per account.</p>
+      <button class="profiles__manage" id="manage-profiles-btn" type="button">Manage Profiles</button>
+    </section>
+  </main>
+
+  <!-- Add Profile Modal -->
+  <div class="profile-modal" id="profile-modal" aria-hidden="true">
+    <div class="profile-modal__backdrop"></div>
+    <div class="profile-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title">
+      <button class="profile-modal__close" id="profile-modal-close" aria-label="Close">✕</button>
+      <h2 id="profile-modal-title">Add a profile</h2>
+      <p class="profile-modal__subtitle">Add a profile for another person watching Stream.</p>
+
+      <form id="profile-form">
+        <div class="profile-modal__avatar"></div>
+        <label class="sr-only" for="profile-name">Profile name</label>
+        <input id="profile-name" name="name" type="text" placeholder="Name" maxlength="20" required>
+
+        <div class="profile-modal__kids">
+          <div>
+            <div class="profile-modal__kids-title">Kids Profile</div>
+            <div class="profile-modal__kids-subtitle">Only see kid-friendly TV shows and movies</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="profile-kids" name="is_kids">
+            <span class="toggle__slider"></span>
+          </label>
+        </div>
+
+        <p class="profile-modal__error" id="profile-error" hidden></p>
+
+        <div class="profile-modal__actions">
+          <button type="submit" class="profile-modal__save">Save</button>
+          <button type="button" class="profile-modal__cancel" id="profile-cancel">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Profile Lock Modal -->
+  <div class="lock-modal" id="lock-modal" aria-hidden="true">
+    <div class="lock-modal__backdrop"></div>
+    <div class="lock-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="lock-modal-title">
+      <h2 id="lock-modal-title">Enter Profile Lock Code</h2>
+      <p class="lock-modal__subtitle">This profile is locked. Please enter the 4-digit code to continue.</p>
+
+      <div class="lock-modal__code-inputs" id="lock-code-inputs">
+        <input type="text" inputmode="numeric" pattern="[0-9]" maxlength="1" class="lock-modal__code-digit" id="lock-code-0" autocomplete="off">
+        <input type="text" inputmode="numeric" pattern="[0-9]" maxlength="1" class="lock-modal__code-digit" id="lock-code-1" autocomplete="off">
+        <input type="text" inputmode="numeric" pattern="[0-9]" maxlength="1" class="lock-modal__code-digit" id="lock-code-2" autocomplete="off">
+        <input type="text" inputmode="numeric" pattern="[0-9]" maxlength="1" class="lock-modal__code-digit" id="lock-code-3" autocomplete="off">
+      </div>
+
+      <p class="lock-modal__error" id="lock-error" hidden></p>
+
+      <div class="lock-modal__actions">
+        <button type="button" class="lock-modal__cancel" id="lock-cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../auth.js"></script>
+  <script src="profiles.js"></script>
+</body>
+</html>
+
+
