@@ -1,0 +1,19 @@
+name: Deploy to Wasmer Edge
+
+on:
+  push:
+    branches:
+      - main  # This triggers the deploy whenever you push to 'main'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Wasmer
+        uses: wasmerio/setup-wasmer@v3.1
+
+      - name: Deploy to Wasmer Edge
+        run: wasmer deploy --non-interactive --token ${{ secrets.WASMER_TOKEN }}
