@@ -1115,3 +1115,425 @@ video::cue-region {
     height: 95px;
   }
 }
+
+/* Netflix-Style Mobile UI */
+/* Mobile Status Bar */
+.mobile-status-bar {
+  display: none;
+}
+
+/* Netflix-Style Navigation */
+.nav--mobile {
+  background: transparent;
+  padding: 8px 16px;
+}
+
+.nav__logo--red {
+  color: #e50914 !important;
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: -0.5px;
+}
+
+.nav__tabs {
+  display: none;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav__tab {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.nav__tab--dropdown {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav__tab-arrow {
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+
+.nav__icon--cast,
+.nav__icon--profile {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Golden Title Styling */
+.hero-banner__title--golden {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+}
+
+.hero-banner__title-main {
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 25%, #d97706 50%, #fbbf24 75%, #fcd34d 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
+  letter-spacing: -1px;
+  line-height: 1.1;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.hero-banner__title-season {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #ffffff;
+  margin-top: 4px;
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.hero-banner__tagline {
+  font-size: 1rem;
+  color: #ffffff;
+  margin: 8px 0;
+  text-align: center;
+}
+
+.hero-banner__tags {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 12px 0;
+  flex-wrap: wrap;
+}
+
+.hero-banner__tag-item {
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+.hero-banner__tag-separator {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
+
+/* Netflix-Style Action Buttons */
+.hero-banner__actions--netflix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+  flex-direction: row;
+}
+
+.hero-banner__btn--mylist,
+.hero-banner__btn--info {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 100px;
+  justify-content: center;
+}
+
+.hero-banner__btn--mylist:hover,
+.hero-banner__btn--info:hover {
+  background: rgba(0, 0, 0, 0.8);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.hero-banner__btn--play {
+  background: #ffffff;
+  border: none;
+  color: #000000;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.hero-banner__btn--play:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.hero-banner__btn--play svg {
+  fill: #000000;
+}
+
+/* Bottom Navigation Bar */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #000000;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: none;
+  align-items: center;
+  justify-content: space-around;
+  padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+  z-index: 1000;
+}
+
+.bottom-nav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 4px 8px;
+  transition: color 0.2s ease;
+  flex: 1;
+  max-width: 80px;
+}
+
+.bottom-nav__item--active {
+  color: #ffffff;
+}
+
+.bottom-nav__item svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Continue Watching with Play Icons */
+.row__rail .tile,
+.tile--continue {
+  position: relative;
+}
+
+.row__rail .tile::before,
+.tile--continue::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  background: rgba(0, 0, 0, 0.75);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+  z-index: 10;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpolygon points='5 3 19 12 5 21'/%3E%3C/svg%3E");
+  background-size: 24px 24px;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.row__rail .tile:hover::before,
+.row__rail .tile:active::before,
+.tile--continue:hover::before,
+.tile--continue:active::before {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+  /* Show mobile status bar */
+  .mobile-status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 16px;
+    background: #000000;
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10001;
+    height: 24px;
+  }
+
+  .status-time {
+    font-weight: 600;
+  }
+
+  .status-icons {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .status-icon {
+    font-size: 0.7rem;
+  }
+
+  /* Show tabs on mobile */
+  .nav__tabs {
+    display: flex;
+  }
+
+  .nav__links {
+    display: none;
+  }
+
+  /* Adjust navigation */
+  .nav--mobile {
+    padding-top: 28px;
+  }
+
+  .nav__right {
+    gap: 8px;
+  }
+
+  /* Hero banner adjustments */
+  .hero-banner {
+    height: min(50vh, 600px);
+    padding: 0 16px 80px;
+  }
+
+  .hero-banner__content {
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-banner__title-main {
+    font-size: 2rem;
+  }
+
+  .hero-banner__title-season {
+    font-size: 1rem;
+  }
+
+  .hero-banner__tagline {
+    font-size: 0.9rem;
+  }
+
+  .hero-banner__actions--netflix {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .hero-banner__btn--mylist,
+  .hero-banner__btn--play,
+  .hero-banner__btn--info {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+
+  /* Show bottom nav */
+  .bottom-nav {
+    display: flex;
+  }
+
+  /* Adjust browse padding for bottom nav */
+  .browse {
+    padding-bottom: 70px;
+  }
+
+  /* Continue Watching adjustments */
+  .row__rail .tile::after {
+    width: 36px;
+    height: 36px;
+    background-size: 18px 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mobile-status-bar {
+    padding: 4px 12px;
+    font-size: 0.8rem;
+  }
+
+  .nav--mobile {
+    padding: 28px 12px 8px;
+  }
+
+  .nav__tabs {
+    gap: 12px;
+  }
+
+  .nav__tab {
+    font-size: 0.8rem;
+  }
+
+  .nav__logo--red {
+    font-size: 1.3rem;
+  }
+
+  .hero-banner__title-main {
+    font-size: 1.6rem;
+  }
+
+  .hero-banner__title-season {
+    font-size: 0.9rem;
+  }
+
+  .hero-banner__tagline {
+    font-size: 0.85rem;
+  }
+
+  .hero-banner__actions--netflix {
+    gap: 6px;
+  }
+
+  .hero-banner__btn--mylist,
+  .hero-banner__btn--play,
+  .hero-banner__btn--info {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+
+  .bottom-nav__item {
+    font-size: 0.65rem;
+    padding: 4px 4px;
+  }
+
+  .bottom-nav__item svg {
+    width: 20px;
+    height: 20px;
+  }
+}
