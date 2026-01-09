@@ -1,4 +1,4 @@
 kind: wasmer.io/App.v0
-name: your-app-name-here  # <--- Change this to your app name
-owner: your-username-here  # <--- Change this to your Wasmer username
+name: streammob  # <--- Change this to your app name
+owner: lancesfp  # <--- Change this to your Wasmer username
 package: .
